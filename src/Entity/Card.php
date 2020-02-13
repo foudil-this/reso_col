@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
@@ -21,38 +22,35 @@ class Card
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="cards")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private $user;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Assert\NotBlank()
      */
-    private $type_card;
-
-    /**
-     * @ORM\Column(type="string", length=500)
-     */
-    private $object;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date_publication;
+    private $typeCard;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    private $Contenu;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $publicationDate;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
     private $titre;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string", length=1000, nullable=true)
      */
-    private $type_f;
-
-    /**
-     * @ORM\Column(type="string", length=20, nullable=true)
-     */
-    private $statu_f;
+    private $Lien;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="card")
@@ -62,6 +60,7 @@ class Card
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->publicationDate=new \DateTime();
     }
 
     public function getId(): ?int
@@ -83,36 +82,36 @@ class Card
 
     public function getTypeCard(): ?string
     {
-        return $this->type_card;
+        return $this->typeCard;
     }
 
-    public function setTypeCard(string $type_card): self
+    public function setTypeCard(string $typeCard): self
     {
-        $this->type_card = $type_card;
+        $this->typeCard = $typeCard;
 
         return $this;
     }
 
-    public function getObject(): ?string
+    public function getContenu(): ?string
     {
-        return $this->object;
+        return $this->Contenu;
     }
 
-    public function setObject(string $object): self
+    public function setContenu(string $Contenu): self
     {
-        $this->object = $object;
+        $this->Contenu = $Contenu;
 
         return $this;
     }
 
-    public function getDatePublication(): ?\DateTimeInterface
+    public function getPublicationDate(): ?\DateTimeInterface
     {
-        return $this->date_publication;
+        return $this->publicationDate;
     }
 
-    public function setDatePublication(\DateTimeInterface $date_publication): self
+    public function setPublicationDate(\DateTimeInterface $publicationDate): self
     {
-        $this->date_publication = $date_publication;
+        $this->publicationDate = $publicationDate;
 
         return $this;
     }
@@ -122,33 +121,21 @@ class Card
         return $this->titre;
     }
 
-    public function setTitre(?string $titre): self
+    public function setTitre(string $titre): self
     {
         $this->titre = $titre;
 
         return $this;
     }
 
-    public function getTypeF(): ?string
+    public function getLien(): ?string
     {
-        return $this->type_f;
+        return $this->Lien;
     }
 
-    public function setTypeF(?string $type_f): self
+    public function setLien(?string $Lien): self
     {
-        $this->type_f = $type_f;
-
-        return $this;
-    }
-
-    public function getStatuF(): ?string
-    {
-        return $this->statu_f;
-    }
-
-    public function setStatuF(?string $statu_f): self
-    {
-        $this->statu_f = $statu_f;
+        $this->Lien = $Lien;
 
         return $this;
     }
