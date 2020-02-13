@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -18,24 +20,35 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\card", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $card;
 
     /**
+     * @ORM\Column(type="string", length=1000)
+     * @Assert\NotBlank()
+     */
+    private $contenu;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private $user;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date_comment;
+    private $publicationDate;
+    //__________________________________________________________________________________________________________________
+    public function __construct()
+    {
+        $this->publicationDate=new \DateTime();
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $contenu;
+
+    }
+    //__________________________________________________________________________________________________________________
 
     public function getId(): ?int
     {
@@ -54,6 +67,18 @@ class Comment
         return $this;
     }
 
+    public function getContenu(): ?string
+    {
+        return $this->contenu;
+    }
+
+    public function setContenu(string $contenu): self
+    {
+        $this->contenu = $contenu;
+
+        return $this;
+    }
+
     public function getUser(): ?user
     {
         return $this->user;
@@ -66,26 +91,14 @@ class Comment
         return $this;
     }
 
-    public function getDateComment(): ?\DateTimeInterface
+    public function getPublicationDate(): ?\DateTimeInterface
     {
-        return $this->date_comment;
+        return $this->publicationDate;
     }
 
-    public function setDateComment(\DateTimeInterface $date_comment): self
+    public function setPublicationDate(\DateTimeInterface $publicationDate): self
     {
-        $this->date_comment = $date_comment;
-
-        return $this;
-    }
-
-    public function getContenu(): ?string
-    {
-        return $this->contenu;
-    }
-
-    public function setContenu(string $contenu): self
-    {
-        $this->contenu = $contenu;
+        $this->publicationDate = $publicationDate;
 
         return $this;
     }

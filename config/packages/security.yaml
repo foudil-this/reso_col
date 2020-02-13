@@ -1,4 +1,11 @@
 security:
+    # comment est encrypté le MDP de user  :
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
+
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         in_memory: { memory: null }

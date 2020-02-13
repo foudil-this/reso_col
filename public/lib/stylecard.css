@@ -1,0 +1,9 @@
+.contcard{
+
+    padding: 10px;
+}
+.flex{
+    display: flex;
+    justify-content: space-around;
+    padding: 5px;
+}
