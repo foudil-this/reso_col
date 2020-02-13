@@ -32,10 +32,10 @@ class User
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
      */
-    private $email;
+    private $mail;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -44,36 +44,21 @@ class User
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=true)
-     */
-    private $avater;
-
-    /**
-     * @ORM\Column(type="string", length=500, nullable=true)
-     */
-    private $mess_perso;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\college", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=20)
      * @Assert\NotBlank()
      */
-    private $college;
+    private $role;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
      */
-    private $class;
+    private $groupe;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Section", mappedBy="user")
      */
-    private $pseudo;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Contact", mappedBy="user")
-     */
-    private $contacts;
+    private $sections;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="user")
@@ -87,7 +72,7 @@ class User
 
     public function __construct()
     {
-        $this->contacts = new ArrayCollection();
+        $this->sections = new ArrayCollection();
         $this->cards = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
@@ -121,14 +106,14 @@ class User
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getMail(): ?string
     {
-        return $this->email;
+        return $this->mail;
     }
 
-    public function setEmail(string $email): self
+    public function setMail(string $mail): self
     {
-        $this->email = $email;
+        $this->mail = $mail;
 
         return $this;
     }
@@ -145,91 +130,55 @@ class User
         return $this;
     }
 
-    public function getAvater(): ?string
+    public function getRole(): ?string
     {
-        return $this->avater;
+        return $this->role;
     }
 
-    public function setAvater(string $avater): self
+    public function setRole(string $role): self
     {
-        $this->avater = $avater;
+        $this->role = $role;
 
         return $this;
     }
 
-    public function getMessPerso(): ?string
+    public function getGroupe(): ?string
     {
-        return $this->mess_perso;
+        return $this->groupe;
     }
 
-    public function setMessPerso(?string $mess_perso): self
+    public function setGroupe(string $groupe): self
     {
-        $this->mess_perso = $mess_perso;
-
-        return $this;
-    }
-
-    public function getCollege(): ?college
-    {
-        return $this->college;
-    }
-
-    public function setCollege(?college $college): self
-    {
-        $this->college = $college;
-
-        return $this;
-    }
-
-    public function getClass(): ?string
-    {
-        return $this->class;
-    }
-
-    public function setClass(?string $class): self
-    {
-        $this->class = $class;
-
-        return $this;
-    }
-
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
-
-    public function setPseudo(?string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
+        $this->groupe = $groupe;
 
         return $this;
     }
 
     /**
-     * @return Collection|Contact[]
+     * @return Collection|Section[]
      */
-    public function getContacts(): Collection
+    public function getSections(): Collection
     {
-        return $this->contacts;
+        return $this->sections;
     }
 
-    public function addContact(Contact $contact): self
+    public function addSection(Section $section): self
     {
-        if (!$this->contacts->contains($contact)) {
-            $this->contacts[] = $contact;
-            $contact->setUser($this);
+        if (!$this->sections->contains($section)) {
+            $this->sections[] = $section;
+            $section->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeContact(Contact $contact): self
+    public function removeSection(Section $section): self
     {
-        if ($this->contacts->contains($contact)) {
-            $this->contacts->removeElement($contact);
+        if ($this->sections->contains($section)) {
+            $this->sections->removeElement($section);
             // set the owning side to null (unless already changed)
-            if ($contact->getUser() === $this) {
-                $contact->setUser(null);
+            if ($section->getUser() === $this) {
+                $section->setUser(null);
             }
         }
 
