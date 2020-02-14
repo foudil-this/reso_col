@@ -5,12 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -54,10 +55,9 @@ class User
     private $plainPassword;
 
     /**
-     * @ORM\Column(type="string", length=30)
-     *
+     * @ORM\Column(type="string", length=20)
      */
-    private $role;
+    private $role = 'ROLE_USER';
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Community", mappedBy="owner")
@@ -344,4 +344,35 @@ class User
             ) = unserialize($serialized);
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getRoles()
+    {
+        return [$this->role];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
 }
