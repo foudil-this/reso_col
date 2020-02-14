@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,74 +18,46 @@ class Comment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\card", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="Le contenu ne peut pas être vide")
      */
-    private $card;
-
-    /**
-     * @ORM\Column(type="string", length=1000)
-     * @Assert\NotBlank()
-     */
-    private $contenu;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
-     */
-    private $user;
+    private $content;
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $publicationDate;
-    //__________________________________________________________________________________________________________________
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $post;
+
     public function __construct()
     {
-        $this->publicationDate=new \DateTime();
-
-
+        $this->publicationDate = new \DateTime();
     }
-    //__________________________________________________________________________________________________________________
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCard(): ?card
+    public function getContent(): ?string
     {
-        return $this->card;
+        return $this->content;
     }
 
-    public function setCard(?card $card): self
+    public function setContent(string $content): self
     {
-        $this->card = $card;
-
-        return $this;
-    }
-
-    public function getContenu(): ?string
-    {
-        return $this->contenu;
-    }
-
-    public function setContenu(string $contenu): self
-    {
-        $this->contenu = $contenu;
-
-        return $this;
-    }
-
-    public function getUser(): ?user
-    {
-        return $this->user;
-    }
-
-    public function setUser(?user $user): self
-    {
-        $this->user = $user;
+        $this->content = $content;
 
         return $this;
     }
@@ -99,6 +70,30 @@ class Comment
     public function setPublicationDate(\DateTimeInterface $publicationDate): self
     {
         $this->publicationDate = $publicationDate;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPost(): ?Post
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Post $post): self
+    {
+        $this->post = $post;
 
         return $this;
     }

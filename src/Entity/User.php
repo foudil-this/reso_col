@@ -20,61 +20,81 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=30)
+     *
+     *@Assert\NotBlank(message="Le prénom est obligatoire")
      */
-    private $nom;
+    private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Le nom sest obligatoire")
      */
-    private $prenom;
+    private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=60)
+     * @Assert\NotBlank(message="L'email est obligatoire")
+     * @Assert\Email(message="L'email n'est pas valide")
      */
-    private $mail;
+    private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     *
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=20)
-     * @Assert\NotBlank()
+     * @var string
+     * @Assert\NotBlank(message="Lemot de passe est obligatoire")
+     * @Assert\Regex(pattern="/^(?=.*[0-9])(?=.*[A-Z]).{6,20}$/",
+     *      message="Mot de passe invalide")
+     */
+    private $plainPassword;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     *
      */
     private $role;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank()
+     * @ORM\OneToMany(targetEntity="App\Entity\Community", mappedBy="owner")
      */
-    private $groupe;
+    private $createdCommunities;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Section", mappedBy="user")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Community", mappedBy="users")
      */
-    private $sections;
+    private $communities;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user")
      */
-    private $cards;
+    private $posts;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatar;
+
     public function __construct()
     {
-        $this->sections = new ArrayCollection();
-        $this->cards = new ArrayCollection();
+        $this->createdCommunities = new ArrayCollection();
+        $this->communities = new ArrayCollection();
+        $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->firstName.' '.$this->lastName;
     }
 
     public function getId(): ?int
@@ -82,38 +102,38 @@ class User
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getFirstName(): ?string
     {
-        return $this->nom;
+        return $this->firstName;
     }
 
-    public function setNom(string $nom): self
+    public function setFirstName(string $firstName): self
     {
-        $this->nom = $nom;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
+    public function getLastName(): ?string
     {
-        return $this->prenom;
+        return $this->lastName;
     }
 
-    public function setPrenom(string $prenom): self
+    public function setLastName(string $lastName): self
     {
-        $this->prenom = $prenom;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function getMail(): ?string
+    public function getEmail(): ?string
     {
-        return $this->mail;
+        return $this->email;
     }
 
-    public function setMail(string $mail): self
+    public function setEmail(string $email): self
     {
-        $this->mail = $mail;
+        $this->email = $email;
 
         return $this;
     }
@@ -130,6 +150,27 @@ class User
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string|null $plainPassword
+     * @return User
+     */
+    public function setPlainPassword(?string $plainPassword): User
+    {
+
+        $this->plainPassword = $plainPassword;
+        return $this;
+    }
+
+
+
     public function getRole(): ?string
     {
         return $this->role;
@@ -142,43 +183,31 @@ class User
         return $this;
     }
 
-    public function getGroupe(): ?string
-    {
-        return $this->groupe;
-    }
-
-    public function setGroupe(string $groupe): self
-    {
-        $this->groupe = $groupe;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Section[]
+     * @return Collection|Community[]
      */
-    public function getSections(): Collection
+    public function getCreatedCommunities(): Collection
     {
-        return $this->sections;
+        return $this->createdCommunities;
     }
 
-    public function addSection(Section $section): self
+    public function addCreatedCommunity(Community $createdCommunity): self
     {
-        if (!$this->sections->contains($section)) {
-            $this->sections[] = $section;
-            $section->setUser($this);
+        if (!$this->createdCommunities->contains($createdCommunity)) {
+            $this->createdCommunities[] = $createdCommunity;
+            $createdCommunity->setOwner($this);
         }
 
         return $this;
     }
 
-    public function removeSection(Section $section): self
+    public function removeCreatedCommunity(Community $createdCommunity): self
     {
-        if ($this->sections->contains($section)) {
-            $this->sections->removeElement($section);
+        if ($this->createdCommunities->contains($createdCommunity)) {
+            $this->createdCommunities->removeElement($createdCommunity);
             // set the owning side to null (unless already changed)
-            if ($section->getUser() === $this) {
-                $section->setUser(null);
+            if ($createdCommunity->getOwner() === $this) {
+                $createdCommunity->setOwner(null);
             }
         }
 
@@ -186,30 +215,58 @@ class User
     }
 
     /**
-     * @return Collection|Card[]
+     * @return Collection|Community[]
      */
-    public function getCards(): Collection
+    public function getCommunities(): Collection
     {
-        return $this->cards;
+        return $this->communities;
     }
 
-    public function addCard(Card $card): self
+    public function addCommunity(Community $community): self
     {
-        if (!$this->cards->contains($card)) {
-            $this->cards[] = $card;
-            $card->setUser($this);
+        if (!$this->communities->contains($community)) {
+            $this->communities[] = $community;
+            $community->addUser($this);
         }
 
         return $this;
     }
 
-    public function removeCard(Card $card): self
+    public function removeCommunity(Community $community): self
     {
-        if ($this->cards->contains($card)) {
-            $this->cards->removeElement($card);
+        if ($this->communities->contains($community)) {
+            $this->communities->removeElement($community);
+            $community->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->contains($post)) {
+            $this->posts->removeElement($post);
             // set the owning side to null (unless already changed)
-            if ($card->getUser() === $this) {
-                $card->setUser(null);
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
             }
         }
 
@@ -246,4 +303,45 @@ class User
 
         return $this;
     }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function serialize()
+    {
+        return serialize(
+       [
+           $this->id,
+           $this->firstName,
+           $this->lastName,
+           $this->email,
+           $this->password,
+           $this->role
+        ]);
+    }
+
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->firstName,
+            $this->lastName,
+            $this->email,
+            $this->password,
+            $this->role
+            ) = unserialize($serialized);
+    }
+
 }
