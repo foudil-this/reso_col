@@ -55,8 +55,7 @@ class User implements UserInterface, \Serializable
     private $plainPassword;
 
     /**
-     * @ORM\Column(type="string", length=30)
-     *
+     * @ORM\Column(type="string", length=20)
      */
     private $role = 'ROLE_USER';
 
@@ -350,7 +349,7 @@ class User implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
+        return [$this->role];
     }
 
     /**
@@ -366,7 +365,7 @@ class User implements UserInterface, \Serializable
      */
     public function getUsername()
     {
-        // TODO: Implement getUsername() method.
+        return $this->email;
     }
 
     /**

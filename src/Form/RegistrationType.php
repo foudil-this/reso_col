@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\User;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -21,26 +20,21 @@ class RegistrationType extends AbstractType
             ->add('firstName',
                 TextType::class,
                 [
-                    'label' => 'nom'
+                    'label'=>'prénom'
                 ]
-            )
-
+                )
             ->add('lastName',
                 TextType::class,
                 [
-                    'label' => 'prenom'
-                ]
-            )
-
+                    'label'=>'nom'
+                ])
             ->add('email',
                 EmailType::class,
                 [
-                    'label' => 'Email'
+                    'label'=>'email'
                 ]
-            )
-
+                )
             ->add('plainPassword',
-                // 2 champs qui doivent avoir la même valeur
                 RepeatedType::class,
                 [
                     // .. de type password
@@ -56,18 +50,17 @@ class RegistrationType extends AbstractType
                     ],
                     // message si les 2 champs n'ont pas la même valeur
                     'invalid_message' => 'La confirmation ne correspond pas au mot de passe'
-                ]
-            )
+                ])
 
-
-            ->add('avatar',
+            ->add(
+                'avatar',
                 FileType::class,
                 [
                     'label' => 'Avatar',
                     // champ optionnel
                     'required' => false
-                ])
-
+                ]
+            )
         ;
     }
 
