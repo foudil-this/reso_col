@@ -5,11 +5,14 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ *
+ * @UniqueEntity(fields={"email"}, message="Un utilisateur existe deja avec cet email")
  */
 class User implements UserInterface, \Serializable
 {
@@ -81,6 +84,10 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Image(mimeTypesMessage="Le fichier doit etre une image",
+     *     maxSize="1M",
+     *     maxSizeMessage="L'image ne doit pas depasser 1 Mo")
      */
     private $avatar;
 
@@ -304,12 +311,12 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getAvatar(): ?string
+    public function getAvatar()
     {
         return $this->avatar;
     }
 
-    public function setAvatar(?string $avatar): self
+    public function setAvatar($avatar): self
     {
         $this->avatar = $avatar;
 

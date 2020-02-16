@@ -56,7 +56,7 @@ class RegistrationType extends AbstractType
                 'avatar',
                 FileType::class,
                 [
-                    'label' => 'Avatar',
+                    'label' => 'avatar',
                     // champ optionnel
                     'required' => false
                 ]
