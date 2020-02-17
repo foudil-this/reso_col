@@ -39,10 +39,7 @@ class Post
      */
     private $user;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Community", inversedBy="posts")
-     */
-    private $communities;
+
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="post")
@@ -54,10 +51,21 @@ class Post
      */
     private $publicationDate;
 
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $type;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Community", inversedBy="posts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $community;
+
     public function __construct()
     {
         $this->publicationDate = new \DateTime();
-        $this->communities = new ArrayCollection();
+
         $this->comments = new ArrayCollection();
     }
 
@@ -102,31 +110,6 @@ class Post
         return $this;
     }
 
-    /**
-     * @return Collection|Community[]
-     */
-    public function getCommunities(): Collection
-    {
-        return $this->communities;
-    }
-
-    public function addCommunity(Community $community): self
-    {
-        if (!$this->communities->contains($community)) {
-            $this->communities[] = $community;
-        }
-
-        return $this;
-    }
-
-    public function removeCommunity(Community $community): self
-    {
-        if ($this->communities->contains($community)) {
-            $this->communities->removeElement($community);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Comment[]
@@ -167,6 +150,30 @@ class Post
     public function setPublicationDate(\DateTimeInterface $publicationDate): self
     {
         $this->publicationDate = $publicationDate;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getCommunity(): ?Community
+    {
+        return $this->community;
+    }
+
+    public function setCommunity(?Community $community): self
+    {
+        $this->community = $community;
 
         return $this;
     }
