@@ -41,6 +41,14 @@ class Community
      */
     private $posts;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     * @Assert\Image(mimeTypesMessage="Le fichier doit etre une image",
+     *     maxSize="1M",
+     *     maxSizeMessage="L'image ne doit pas depasser 1 Mo")
+     */
+    private $image;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -126,6 +134,18 @@ class Community
             $this->posts->removeElement($post);
             $post->removeCommunity($this);
         }
+
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage($image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
