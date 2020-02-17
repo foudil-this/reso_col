@@ -41,8 +41,19 @@ class Community
      */
     private $posts;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $creationDate;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $image;
+
     public function __construct()
     {
+        $this->creationDate = new \DateTime();
         $this->users = new ArrayCollection();
         $this->posts = new ArrayCollection();
     }
@@ -126,6 +137,30 @@ class Community
             $this->posts->removeElement($post);
             $post->removeCommunity($this);
         }
+
+        return $this;
+    }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
