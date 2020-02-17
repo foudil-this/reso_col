@@ -1,0 +1,13 @@
+.navbar-dark .navbar-nav .nav-link {
+    font-weight: bold;
+    font-size: large;
+    color: white;
+
+}
+h5{
+    color: lightskyblue;
+}
+.navbar-dark .navbar-nav .nav-link.btn-info{
+    background-color: lightskyblue;
+    color: rebeccapurple;
+}
