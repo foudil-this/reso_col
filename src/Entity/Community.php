@@ -55,6 +55,7 @@ class Community
 
     public function __construct()
     {
+        $this->creationDate = new \DateTime();
         $this->users = new ArrayCollection();
         $this->posts = new ArrayCollection();
     }
@@ -138,18 +139,6 @@ class Community
             $this->posts->removeElement($post);
             $post->removeCommunity($this);
         }
-
-        return $this;
-    }
-
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    public function setImage($image): self
-    {
-        $this->image = $image;
 
         return $this;
     }
