@@ -42,12 +42,10 @@ class Community
     private $posts;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $creationDate;
-
-    /**
      * @ORM\Column(type="string", length=100, nullable=true)
+     * @Assert\Image(mimeTypesMessage="Le fichier doit etre une image",
+     *     maxSize="1M",
+     *     maxSizeMessage="L'image ne doit pas depasser 1 Mo")
      */
     private $image;
 
@@ -137,30 +135,6 @@ class Community
             $this->posts->removeElement($post);
             $post->removeCommunity($this);
         }
-
-        return $this;
-    }
-
-    public function getCreationDate(): ?\DateTimeInterface
-    {
-        return $this->creationDate;
-    }
-
-    public function setCreationDate(\DateTimeInterface $creationDate): self
-    {
-        $this->creationDate = $creationDate;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
 
         return $this;
     }
