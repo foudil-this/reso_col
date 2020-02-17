@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Association {{ community.name }}</h1>
+
+        {% for user in users %}
+
+            <div class="alert alert-secondary mt-2">
+                <strong>    {{ user.email }}    </strong> <em></em>  {{ user.firstName }} <em></em>  {{ user.lastName }}
+            </div>
+        {% else %}
+            <p>Aucun membre pour cet association</p>
+
+        {% endfor %}
+
+
+
+        <form method="post">
+
+                <div class="form-group">
+                    <label>Email nouveau membre</label>
+                    <input type="email" name="email_user_add" class="form-control" >
+                </div>
+                <div class="text-left">
+                    <button type="submit" class="btn btn-primary">
+                        Ajout du membre
+                    </button>
+                </div>
+                <br>
+                <div class="text-left">
+                        <a href="{{ path('app_index_index') }}" class="btn btn-success">Terminé</a>
+                </div>
+
+        </form>
+
+
+    </div>
+{% endblock %}
+
