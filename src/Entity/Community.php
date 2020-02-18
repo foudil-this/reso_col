@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -53,9 +54,16 @@ class Community
      */
     private $image;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $creationDate;
+
+
+
     public function __construct()
     {
-        $this->creationDate = new \DateTime();
+        $this->creationDate = new DateTime();
         $this->users = new ArrayCollection();
         $this->posts = new ArrayCollection();
     }
@@ -154,4 +162,20 @@ class Community
 
         return $this;
     }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+
+
+
 }

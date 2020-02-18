@@ -52,4 +52,6 @@ class CommunityController extends AbstractController
         return $this->redirectToRoute('app_admin_community_index');
 
     }
+
+
 }

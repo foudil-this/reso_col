@@ -69,6 +69,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Community", mappedBy="users")
+     * @ORM\OrderBy{"creationDate" : "DESC"}
      */
     private $communities;
 
