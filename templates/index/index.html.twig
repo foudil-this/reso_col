@@ -20,8 +20,8 @@
                                                                   <h2 class="mb-0 row justify-content-between">
                                                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ groupp.id }}"
                                                                            aria-expanded="true" aria-controls="collapse{{ groupp.id }}">
-                                                                           {{ groupp.community.name }}
-                                                                           <a href="#"><img src="{{ asset('images/aller.png') }}" alt="" width="30" height="30"></a>
+                                                                           {{ groupp.name }}
+                                                                           <a href="{{ path('app_index_muruser',{'id': groupp.id}) }}"><img src="{{ asset('images/aller.png') }}" alt="" width="30" height="30"></a>
                                                                    </button>
                                                                    <!-- <h5 class="  ">{ groupp. }}</h5> -->
                                                                   </h2>
@@ -30,7 +30,7 @@
                                                                 data-parent="#accordionExample">
                                                                 <div class="card-body">
 
-                                                                   {% for user in  groupp.user %}
+                                                                   {% for user in  groupp.users %}
                                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
                                                                     {{ user.firstName }}
                                                                    </li>
@@ -49,16 +49,29 @@
                              </ul>
                        </div>
                               <h3><img src="{{ asset('images/users2.jpg') }}" alt="" width="30" height="30">Community</h3>
-                                    {% for groups in groupes %}
 
-                                               <div class="list-group">
+                      {% if groupesuser is defined  %}
+                          {#       affiche les nom des groupe ou on est user mais pas proprio                 #}
+
+                                    {% for noms in groupesuser %}
+
+                                            <div class="list-group">
+{#                                            {{ dump(noms.communities.count()) }}#}
+                                                {% for  user in noms.communities %}
+                                                    <a href="#" class="list-group-item list-group-item-action">{{ user.name }}</a>
+
+                                                {% endfor %}
 
 
-                                               <a href="#" class="list-group-item list-group-item-action">{{ groups.community.name }}</a>
+
+
+
+
+
 
                                                </div>
                                     {% endfor %}
-
+                      {% endif %}
 
 
 
@@ -69,9 +82,15 @@
 
 
                      <div class="col-6 mt-1">
+                         {% if nom =='mur' %}
+                             <img class="avatar" width="100" height="100" src="../images/{{ nomgroupe.image }}"/>
+                             <h3 style="color:#305480">{{ nomgroupe }}</h3>
+                             {% else %}
+                                 <img class="avatar" width="100" height="100" src="../images/{{ user.avatar }}"/>
+                                 <h3 style="color:#305480">{{ user }}</h3>
+                         {% endif %}
 
-                         <img class="avatar" width="100" height="100" src="{{ asset('images/admin.jpg') }}"/>
-                         <h3 style="color:#305480">{{ nom }}</h3>
+
 
                      </div>
                      <div class="col-6 mt-3 d-flex flex-row-reverse bd-highlight">
@@ -114,10 +133,15 @@
                                  </div>
                                  <div class="tool_img " style="margin-top: 3px">
                                      <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
-                                         <button type="button" class="btn btn-secondary" style="padding: 0"><img src="{{ asset('images/coeur2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                         <button type="button" class="btn btn-secondary" style="padding: 0"><img src="{{ asset('images/like2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                         <button type="button" class="btn btn-secondary aj_com" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                         <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#multiCollapseExample{{ loop.index }}" aria-expanded="false" aria-controls="multiCollapseExample2" style="padding: 0"><img src="{{ asset('images/voir_comment.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                                         <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0;background-color: rgba(0,0,0,.03)"><img src="{{ asset('images/coeur2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                                         <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0"><img src="{{ asset('images/like2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                                         <button type="button" class="btn btn-secondary aj_com btn-griaapli" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                                         <button class="btn btn-secondary btn-griaapli" type="button" data-toggle="collapse" data-target="#multiCollapseExample{{ loop.index }}" aria-expanded="false" aria-controls="multiCollapseExample2" style="padding: 0"><img src="{{ asset('images/voir_comment.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                                         {% if nom =='mur' %}
+                                         {#    bouton supprimer uniquement   #}
+                                             <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0"><img src="{{ asset('images/delete_post.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+
+                                         {% endif %}
                                      </div>
                                      <div><em style="color: #0f6674;width: 100%; text-align: right">{{ poste.publicationDate.format('d-m-Y') }} du post :{{ loop.index }}</em></div>
                                  </div>
