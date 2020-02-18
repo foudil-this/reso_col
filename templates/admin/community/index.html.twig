@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Gestion communities</h1>
+
+
+    <table class="table table-striped">
+
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Owner</th>
+            <th>Date création</th>
+            <th style="width: 250px"></th>
+        </tr>
+        {% for community in communities  %}
+            <tr>
+                <td>{{ community.id }}</td>
+                <td>{{ community.name }}</td>
+                <td> <img src="{{ asset('images/' ~ community.image) }}" width="40px"></td>
+                <td>{{ community.owner }}</td>
+                <td>{{ community.creationDate|date("d/m/Y") }}</td>
+                <td>
+                    {#                    <a href="{{ path('app_admin_post_edit', {'id': post.id}) }}"#}
+                    {#                       class="btn btn-primary">#}
+                    {#                        Modifier</a>#}
+                    <a href="{{ path('app_admin_community_delete', {'id': community.id}) }}"
+                       class="btn btn-danger">
+                        Supprimer
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} -admin-communities
+{% endblock %}

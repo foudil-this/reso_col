@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Groupe {{ community.name }}</h1>
+
+        {% for user in users %}
+            {% if user == community.owner %}
+                <div class="alert alert-success mt-2">
+                    <p> <strong>Createur du groupe </strong></p>
+                    <strong>    {{ user.email }}    </strong> <em></em>  {{ user.firstName }} <em></em>  {{ user.lastName }} <em></em>
+                </div>
+
+            {% else %}
+            <div class="alert alert-secondary mt-2">
+                <strong>    {{ user.email }}    </strong> <em></em>  {{ user.firstName }} <em></em>  {{ user.lastName }}
+            </div>
+            {% endif %}
+        {% else %}
+            <p>Aucun membre pour ce groupe</p>
+
+        {% endfor %}
+
+
+
+        <form method="post">
+
+                <div class="form-group">
+                    <label>Email nouveau membre</label>
+                    <input type="email" name="email_user_add" class="form-control" >
+                </div>
+                <div class="text-left">
+                    <button type="submit" class="btn btn-primary">
+                        Ajout du membre
+                    </button>
+                </div>
+                <br>
+                <div class="text-left">
+                        <a href="{{ path('app_index_index') }}" class="btn btn-primary">Le groupe est constitué</a>
+                </div>
+
+        </form>
+
+
+    </div>
+{% endblock %}
+
