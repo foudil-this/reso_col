@@ -109,30 +109,40 @@ class CommunityController extends AbstractController
 
 
         $owner = $community->getOwner();
-        dump($users[0]);
+        dump($users[1]);
         // test si il y a bien un email saisi dans la requete
         if($request->request->has('email_user_add')){
             // recherche dans la table user du user ayant l'email saisi
             $userAdded= $userRepository->findOneBy(
                 ['email' => $request->request->get('email_user_add')]
             );
+            if(is_null($userAdded)){
+                $this->addFlash('error', 'le membre n\'est pas inscrit, son inscription est obligatoire');
+            }else{
 
-            if ($community->getUsers()->contains($userAdded)) {
-                $this->addFlash('error', 'le membre est dejà dans cette association');
+                // test si le membre est deja dans l'association
+                if ($community->getUsers()->contains($userAdded)) {
+                    $this->addFlash('error', 'le membre est dejà dans cette association');
+                }else{
+
+
+    
+                dump($userAdded);
+                dump($community);
+
+
+                // ajout dans community du user saisi dans le formulaire (son email)
+                $community->addUser($userAdded);
+
+
+
+                // connexion à la BDD
+                $manager->persist($community);
+                $manager->flush();
+                }
             }
-
-            dump($userAdded);
-            dump($community);
-
-
-            // ajout dans community du user saisi dans le formulaire (son email)
-            $community->addUser($userAdded);
-
-
-
-            // connexion à la BDD
-            $manager->persist($community);
-            $manager->flush();
+        }else{
+            $this->addFlash('error', 'l\'Email saisi n\'est pas valide');
         }
 
 
@@ -140,4 +150,6 @@ class CommunityController extends AbstractController
         return $this->render('community/addUserCommunity.html.twig', ['community' => $community,
             'users' => $users]);
     }
+
+
 }

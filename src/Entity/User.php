@@ -230,6 +230,11 @@ class User implements UserInterface, \Serializable
         return $this->communities;
     }
 
+    public function hasCommunity(Community $community)
+    {
+        return $this->getCommunities()->contains($community);
+    }
+
     public function addCommunity(Community $community): self
     {
         if (!$this->communities->contains($community)) {
