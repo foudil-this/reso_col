@@ -6,6 +6,7 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('lib/boostrap/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+        <link rel="stylesheet" href="{{ asset('lib/stylecard.css') }}">
     {% endblock %}
 </head>
 <body>
@@ -52,8 +53,12 @@
             {% if app.user is not null %}
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link btn btn-info btn-lg"  href="{{ path('app_community_edit') }}">Creer un groupe</a>
-                    </a>
+
+                    <a class="navbar-brand" href="{{ path('app_index_index',{'id': 3}) }}"><img src="{{ asset('images/bouton_accueil.png') }}" alt="" style="width: 50px"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-info btn-lg"  href="{{ path('app_community_edit') }}">Creer une association</a>
+
                 </li>
             </ul>
             {% endif %}

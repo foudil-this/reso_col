@@ -41,9 +41,12 @@ class Community
     private $users;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Post", mappedBy="communities")
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="community")
      */
     private $posts;
+
+
+
 
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -53,11 +56,18 @@ class Community
      */
     private $image;
 
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+
     public function __construct()
     {
         $this->creationDate = new \DateTime();
         $this->users = new ArrayCollection();
         $this->posts = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -127,7 +137,7 @@ class Community
     {
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
-            $post->addCommunity($this);
+            $post->setCommunity($this);
         }
 
         return $this;
@@ -137,11 +147,17 @@ class Community
     {
         if ($this->posts->contains($post)) {
             $this->posts->removeElement($post);
-            $post->removeCommunity($this);
+            // set the owning side to null (unless already changed)
+            if ($post->getCommunity() === $this) {
+                $post->setCommunity(null);
+            }
         }
 
         return $this;
     }
+
+
+
 
     public function getImage()
     {
@@ -154,4 +170,5 @@ class Community
 
         return $this;
     }
+
 }
