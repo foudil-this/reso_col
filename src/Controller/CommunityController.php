@@ -126,7 +126,7 @@ class CommunityController extends AbstractController
                 }else{
 
 
-    
+
                 dump($userAdded);
                 dump($community);
 
@@ -151,5 +151,5 @@ class CommunityController extends AbstractController
             'users' => $users]);
     }
 
-
+// $requete="UPDATE ta_table SET derniere_connexion=NOW() WHERE id='".$le_id_de_ton_membre."'";
 }
