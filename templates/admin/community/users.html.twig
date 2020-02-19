@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<table class="table table-striped">
+    <h1>Les users de {{ community.name }}</h1>
+    <tr>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Avatar</th>
+        <th style="width: 400px"></th>
+    </tr>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.firstName }}</td>
+            <td><img src="{{ asset('images/' ~ user.avatar) }}" width="40px"></td>
+
+
+            <td>
+                <a class="btn btn-primary" href="{{ path('app_admin_user_communities', {'id': user.id}) }}">
+                    Communities
+                </a>
+                <a class="btn btn-success" href="{{ path('app_admin_user_posts', {'id': user.id}) }}">
+                    Posts
+                </a>
+                <a href="{{ path('app_admin_user_delete', {'id': user.id}) }}"
+                   class="btn btn-danger">
+                    Supprimer</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} -admin-community-users
+{% endblock %}

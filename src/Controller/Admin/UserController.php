@@ -4,6 +4,7 @@
 namespace App\Controller\Admin;
 
 
+use App\Entity\Community;
 use App\Entity\User;
 use App\Form\RegistrationType;
 use App\Repository\CommunityRepository;
@@ -92,6 +93,8 @@ class UserController extends AbstractController
     {
         $communities = $user->getCommunities();
 
+
+
         return $this->render('admin/user/communities.html.twig',
             [
                 'communities'=>$communities,
@@ -100,5 +103,8 @@ class UserController extends AbstractController
             );
 
     }
+
+
+
 
 }

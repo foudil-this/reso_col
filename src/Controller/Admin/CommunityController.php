@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Community;
 use App\Repository\CommunityRepository;
+use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -52,6 +53,42 @@ class CommunityController extends AbstractController
         return $this->redirectToRoute('app_admin_community_index');
 
     }
+    /**
+     * @param PostRepository $repository
+     * @param Community $community
+     * @Route("/posts/{id}", requirements={"id": "\d+"})
+     * @return Response
+     */
+    public function posts(CommunityRepository $repository, Community $community)
+    {
+        $posts = $community->getPosts();
 
+        return $this->render('admin/community/posts.html.twig',
+            [
+                'posts'=>$posts,
+                'community'=>$community,
+
+            ]
+        );
+
+    }
+
+    /**
+     * @param CommunityRepository $repository
+     * @param Community $community
+     * @return Response
+     * @Route("/users/{id}", requirements={"id": "\d+"})
+     */
+    public function users(CommunityRepository $repository, Community $community)
+    {
+        $users = $community->getUsers();
+
+        return $this->render('admin/community/users.html.twig',
+            [
+                'users'=>$users,
+                'community'=>$community
+            ]
+            );
+    }
 
 }

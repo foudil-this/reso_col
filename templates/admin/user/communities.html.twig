@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <table class="table table-striped">
-        <h1>Les communnity de ce user</h1>
+        <h1>Les communnity de {{ user }} </h1>
 
         <tr>
             <th>Id</th>
@@ -19,9 +19,9 @@
                 <td>{{ community.owner }}</td>
                 <td>{{ community.creationDate|date("d/m/Y") }}</td>
                 <td>
-                    {#                    <a href="{{ path('app_admin_post_edit', {'id': post.id}) }}"#}
-                    {#                       class="btn btn-primary">#}
-                    {#                        Modifier</a>#}
+                                        <a href="{{ path('app_admin_community_posts', {'id': community.id}) }}"
+                                           class="btn btn-primary">
+                                            Posts</a>
                     <a href="{{ path('app_admin_community_delete', {'id': community.id}) }}"
                        class="btn btn-danger">
                         Supprimer</a>
