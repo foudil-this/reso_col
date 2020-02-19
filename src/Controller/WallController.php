@@ -1,10 +1,11 @@
 <?php
 
+
 namespace App\Controller;
 
-use App\Entity\Community;
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Repository\CommentRepository;
 use App\Repository\CommunityRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
@@ -17,163 +18,130 @@ use Symfony\Component\Routing\Annotation\Route;
 class WallController extends AbstractController
 {
     /**
-     * @Route("/wall")
+     * @Route("/wall/{id}/{type}", defaults={"id": null ,"type":null})
      */
     public function index(UserRepository $userRepository,
-                          CommunityRepository $communityRepository,
-                          PostRepository $postRepository)
-    {
+                       CommunityRepository $communityRepository,
+                       PostRepository $postRepository,
+                       $id,
+                       $type,
+                       EntityManagerInterface $manager,
+                       CommentRepository $commentRepository,
 
-        // fonction qui renvoi les liste et les poste de notre utilisateur (liste de tous les poste qu'il a posté
-        //sur tous les groupe ou il est mombre et proprio
-        //elle s'execute uniquement s'il y apas d'id passé dans l'url
-
-
-
-
-        //recuperation des groupe et de leur membres de l'utilisateur conecté
-        $groupes=$communityRepository->findBy(['owner' => $this->getUser()]);
+                       Request $request
 
 
-        //recuperation des donné de l'utilisateur
-        $user=$userRepository->findOneBy(['id'=>$this->getUser()]);
-        // recupére les donnée utilistaeur da   ns un tableau pour extraire la liste
-        //des nom de groupe ou il est mombre mais pas proprio
-        $groupesuser =$userRepository->findBy(['id' => $this->getUser()]);
-        //recupére la liste de tous  poste de notre utilisateur
-        $posts=$postRepository->findBy(['user'=>$this->getUser()]);
-
-        return $this->render('wall/index.html.twig',
-
-            [
-                'groupes'=>$groupes,
-                // param obseléte a retiré apres test
-                'nom'=>$this->getUser(),
-                'postes'=>$posts,
-                'groupesuser'=>$groupesuser,
-                'user'=>$user
-
-            ]
-
-        );
-    }
-
-
-
-    /**
-     * @Route("/murcommunity/{id}", defaults={"id": null}, requirements={"id": "\d+"})
-     */
-    public function murcommunity(UserRepository $userRepository,
-                                 CommunityRepository $communityRepository,
-                                 PostRepository $postRepository,
-                                 $id
     )
     {
+
+        $vue_formulaire = false;
         // fonction qui s'execute uniquement si un id de groupe est passé dans l'url et renvoi
         //le mur du groupe , le fil des poste de tous les membres du groupe
 
+        //recuperation des groupe et de leur membres de l'utilisateur conecté
+        $groupes = $communityRepository->findBy(['owner' => $this->getUser()]);
+        //recuperation des donné de l'utilisateur
+        $user = $userRepository->findOneBy(['id' => $this->getUser()]);
+        // recupére les donnée utilistaeur da   ns un tableau pour extraire la liste
+        //des nom de groupe ou il est mombre mais pas proprio
+        $groupesuser = $userRepository->findBy(['id' => $this->getUser()]);
 
-        if (is_null($id)){
-            $nom=$this->getUser();
+        if (is_null($id)) {
+            //si y a pas d'id dans l'url c'est que c'est la page utilisateur qui est chargé
+            //recupére la liste de tous  poste de notre utilisateur
+            $posts = $postRepository->findBy(['user' => $this->getUser()]);
+            $nom = 'afficheMuruser';
 
-        }else{
-            $nom='mur';
-            $nomgroupe=$communityRepository->findOneBy(['id'=>$id]);
+        }
+
+        if (!is_null($id)) {
+            // s'il y a un id dans l'url c'est que c'est la demande d'ouverture du mur d'un groupe
+            //donc l'id passé est celui d'une community a afficher sur la partie droit de la vue
+            $nom = 'afficheMurGroupe';
+            $posts = $communityRepository->findOneBy(['id' => $id]);
+            $posts = $postRepository->findBy(['community' => $id]);
+
+        }
+        //_________________________________________________________________
+        // test s'il y a un paramétre type passé pour envoyer le formulaire
+        //________________________________________________________________
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+        if (isset($type)) {
+
+            // $comm= new Community();
+            $comm = $communityRepository->findOneBy(['id' => $id]);
+            $vue_formulaire = true;
+
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+                    /** @var    UploadedFile|null $image */
+                    $image = $post->getImage();
+
+                    // test si une image est saisi dans le formulaire
+                    if (!is_null($image)) {
+                        // nom pour la BDD
+                        $image = $form->get('image')->getData();
+                        $imagefilename = uniqid() . '.' . $image->guessExtension();
+
+                        // deplacer le fichier vers le repertoire de stockage
+                        $image->move(
+                        // repertoire de destination fait dans config/services.yaml
+                            $this->getParameter('upload_dir'),
+                            // nom du fichier
+                            $imagefilename
+                        );
+                        // on sette l'image' de l'article avec le nom du fichier
+                        // pour enregistrement
+                        $post->setImage($imagefilename);
+                        $post->setCommunity($comm);
+                        $post->setUser($this->getUser());
+                        $post->setType('image');
+
+                        // insertion dans la BDD
+                        $manager->persist($post);
+                        $manager->flush();
+
+                        $this->addFlash('success', 'Votre post a était rajouté');
+
+                        // dump($user);
+                        // retour de l'objet userController vers index
+
+                        return $this->redirectToRoute('app_wall_index', ['id' => $id]);
+
+
+                    } else {
+                        $this->addFlash('error', 'le formulaire contient des erreurs');
+                    }
+                }
+
+            }
+
         }
 
 
-        $groupes=$communityRepository->findBy(['owner' => $this->getUser()]);
+        dump($vue_formulaire);
 
-
-        $groupesuser =$userRepository->findBy(['id' => $this->getUser()]);
-
-
-
-        $posts=$postRepository->findBy(['community'=>$id]);
-        dump($groupesuser);
-
-        dump($posts);
-        dump($groupes[0]);
         return $this->render('wall/index.html.twig',
 
             [
-                'groupes'=>$groupes,
-                'nom'=>$nom,
-                'nomgroupe'=>$nomgroupe,
-                'postes'=>$posts,
-                'groupesuser'=>$groupesuser,
+                'groupes' => $groupes,
+                'nom' => $nom,
+                'nomgroupe' => $posts,
+                'postes' => $posts,
+                'groupesuser' => $groupesuser,
+                'id_groupe' => $id,
+                'user' => $this->getUser(),
+                'vue' => $vue_formulaire,
+                'form' => $form->createView(),
 
 
             ]
 
         );
     }
-
-    /**
-     * @Route("/newpost/{id}", defaults={"id": null}, requirements={"id": "\d+"})
-     */
-    public function newpost(Request $request,
-                            Community $community,
-                            PostRepository $postRepository,
-                            EntityManagerInterface $manager,
-                            CommunityRepository $communityRepository,
-                            $id
-    )
-    {
-        $post = new Post();
-        // $comm= new Community();
-        $comm=$communityRepository->findOneBy(['id'=>$id]);
-
-
-        $form = $this->createForm(PostType::class, $post);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                /** @var    UploadedFile|null $image */
-                $image = $post->getImage();
-
-                // test si une image est saisi dans le formulaire
-                if (!is_null($image)) {
-                    // nom pour la BDD
-                    $image = $form->get('image')->getData();
-                    $imagefilename = uniqid() . '.' . $image->guessExtension();
-
-                    // deplacer le fichier vers le repertoire de stockage
-                    $image->move(
-                    // repertoire de destination fait dans config/services.yaml
-                        $this->getParameter('upload_dir'),
-                        // nom du fichier
-                        $imagefilename
-                    );
-                    // on sette l'image' de l'article avec le nom du fichier
-                    // pour enregistrement
-                    $post->setImage($imagefilename);
-                    $post->setCommunity($comm);
-                    $post->setUser($this->getUser());
-                    $post->setType('image');
-
-                    // insertion dans la BDD
-                    $manager->persist($post);
-                    $manager->flush();
-
-                    $this->addFlash('success', 'Votre post a était rajouté');
-
-                    // dump($user);
-                    // retour de l'objet userController vers index
-                    return $this->redirectToRoute('app_wall_index');
-
-
-                } else {
-                    $this->addFlash('error', 'le formulaire contient des erreurs');
-                }
-            }
-
-        }
-        // retour de l'objet userController vers inscription
-        return $this->render(
-            'wall/newpost.html.twig',
-            ['form' => $form->createView()]
-        );
-    }
 }
+

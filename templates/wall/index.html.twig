@@ -6,11 +6,13 @@
     <!--  affichage des liste de groupe  ________________________________________-->
     <div class="container">
         <div class="row">
-            <div class="col-3">
+            <div class="col-md-3 col-sm-12">
                 <div class="contien_liste">
                     <ul class="list-group">
-                        <h3><img src="{{ asset('images/admin.jpg') }}" alt="" width="30" height="30">Mes groupe</h3>
-                        <div class="accordion " id="accordionExample">
+                        <h3><img src="{{ asset('images/admin.jpg') }}" alt="" width="30" height="30">Mes groupe
+                            <button id="btn_groupes_index">Voir</button>
+                        </h3>
+                        <div class="accordion " id="groupes_index">
                             {% if groupes is  defined %}
                                 {% for groupp in groupes %}
 
@@ -20,7 +22,7 @@
                                                 <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ groupp.id }}"
                                                         aria-expanded="true" aria-controls="collapse{{ groupp.id }}">
                                                     {{ groupp.name }}
-                                                    <a href="{{ path('app_wall_murcommunity',{'id': groupp.id}) }}"><img src="{{ asset('images/aller.png') }}" alt="" width="30" height="30"></a>
+                                                    <a href="{{ path('app_wall_index',{'id': groupp.id}) }}"><img src="{{ asset('images/aller.png') }}" alt="" width="30" height="30"></a>
                                                 </button>
                                                 <!-- <h5 class="  ">{ groupp. }}</h5> -->
                                             </h2>
@@ -76,7 +78,7 @@
 
             </div>
 
-            <div class="col-7 " style="padding: 0">
+            <div class="col-md-9 col-sm-12" style="padding: 0">
                 <div class="row flex border border-info mt-1 rounded" style="background-color: rgba(0,0,0,.03);margin: 0">
 
 
@@ -106,16 +108,37 @@
                         </form>
                     </div>
                 </div>
+                <br>
                 <div class="tool_img " style="margin-top: 3px">
                     <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
                         <div style="padding-right:10px;padding-left:10px;margin-right: 4px;border:2px solid gray;border-radius: 3px;background-color: #7abaff">Ajouter  :  </div>
-                        <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-image.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                        <a href="{{ path('app_wall_index', {id : nomgroupe[0].id, type:'image'}) }}">
+
+                            <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-image.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                        </a>
                         <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-video.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
                         <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-article.svg') }}" alt="" style="width: 30px; border-radius: 2px"></button>
 
 
                     </div>
                 </div>
+                {% if vue %}
+                    <div class="ajouterposte">
+                        <h3>Ajouter un poste</h3>
+                        <div class="container">
+                            {{ form_start(form) }}
+                            {{ form_row(form.content) }}
+                            {{ form_row(form.image) }}
+                            <div class="text-right">
+                                <button class="btn btn-primary" type="submit">Enregistrer</button>
+                            </div>
+
+                            {{ form_end(form) }}
+
+                        </div>
+                    </div>
+
+                {% endif %}
                 <!--  affichage des poste ________________________________________-->
                 <div class="mur" >
                     {% for poste in  postes %}
@@ -203,3 +226,19 @@
         </div>
     </div>
 {% endblock %}
+
+
+
+{% block javascripts %}
+
+
+    {{ parent() }}
+{% endblock %}
+
+
+
+
+
+
+
+

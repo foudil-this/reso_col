@@ -10,6 +10,14 @@
 
 /*}*/
 
+.navbar-dark .navbar-nav .nav-item2 {
+    font-weight: bold;
+    font-size: large;
+    color: white;
+    margin-left: 1rem;
+
+}
+
 .navbar-dark .navbar-nav .nav-link {
     font-weight: bold;
     font-size: large;
@@ -52,7 +60,7 @@ h1 {
 
 /*}*/
 .card {
-border: none;
+    border: none;
     margin-top: 1rem;
     /*opacity: 0.3;*/
 
@@ -75,13 +83,12 @@ footer .nav .btn-primary{
     margin-top: 12px;
     margin-right: 750px;
 }
-
+/*
 button {
     background-color: rebeccapurple;
     color: rebeccapurple;
-    float: right;
 }
-
+*/
 .container figure{
     display: block;
     margin-left: auto;
@@ -98,7 +105,7 @@ h2{
 }
 
 .col{
-    ;
+;
     width: 40%;
     height: 50vh;
     border: darkviolet 1px solid;
@@ -125,4 +132,23 @@ h2{
 .images_galerie img{
     width: 150px;
     height: 100px;
+}
+
+.btn-validation-group {
+    border-width: 3px;
+}
+
+#btn_groupes_index {
+    display: none;
+}
+
+
+@media (max-width: 576px) {
+    #groupes_index {
+        display: none;
+    }
+
+    #btn_groupes_index {
+        display: inline;
+    }
 }
