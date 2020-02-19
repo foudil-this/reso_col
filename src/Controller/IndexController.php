@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
+
     /**
      * @Route("/")
      */
@@ -21,7 +22,10 @@ class IndexController extends AbstractController
                           )
     {
 
-       // fonction qui renvoi les liste et les poste de notre utilisateur (liste de tous les poste qu'il a posté
+        if (!empty($this->getUser())){
+
+
+        // fonction qui renvoi les liste et les poste de notre utilisateur (liste de tous les poste qu'il a posté
         //sur tous les groupe ou il est mombre et proprio
         //elle s'execute uniquement s'il y apas d'id passé dans l'url
 
@@ -30,6 +34,8 @@ class IndexController extends AbstractController
 
        //recuperation des groupe et de leur membres de l'utilisateur conecté
         $groupes=$communityRepository->findBy(['owner' => $this->getUser()]);
+
+
         //recuperation des donné de l'utilisateur
         $user=$userRepository->findOneBy(['id'=>$this->getUser()]);
         // recupére les donnée utilistaeur da   ns un tableau pour extraire la liste
@@ -51,13 +57,16 @@ class IndexController extends AbstractController
             ]
 
             );
+        }else{
+            return $this->render('index/index.html.twig');
+        }
     }
 
     //__________________________________________________________________________________________________________
     /**
-     * @Route("/muruser/{id}", defaults={"id": null}, requirements={"id": "\d+"})
+     * @Route("/murcommunity/{id}", defaults={"id": null}, requirements={"id": "\d+"})
      */
-    public function muruser(UserRepository $userRepository,
+    public function murcommunity(UserRepository $userRepository,
                           CommunityRepository $communityRepository,
                           PostRepository $postRepository,
     $id

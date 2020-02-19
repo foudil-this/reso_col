@@ -1,15 +1,128 @@
+/*body{*/
+
+/*    font-family: 'Poppins', sans-serif;*/
+/*    background-image: url("../images/cercle-technologie-bleue-abstrait-science-informatique-code-bleu-binaire_10307-755.jpg");*/
+/*    margin: 0;*/
+/*    height: 100vh;*/
+/*    background-size: cover;*/
+/*    background-repeat: no-repeat;*/
+
+
+/*}*/
+
 .navbar-dark .navbar-nav .nav-link {
     font-weight: bold;
     font-size: large;
     color: white;
 
 }
-h5{
-    color: lightskyblue;
+.figure{
+
+
 }
+h1 {
+    text-align: center;
+    color: darkblue;
+}
+
+
 .navbar-dark .navbar-nav .nav-link.btn-info{
     background-color: lightskyblue;
     color: rebeccapurple;
 }
 
+.nav-avatar {
+    width: 40px;
+    height: 40px;
 
+}
+
+.nav-link-user {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    color: lightskyblue;
+}
+
+/*.card-group{*/
+/*    background-image: url("../images/reseau_labyrinthe.jpg");*/
+/*    margin: 0;*/
+/*    height: 100vh;*/
+/*    background-size: cover;*/
+/*    background-repeat: no-repeat;*/
+
+/*}*/
+.card {
+border: none;
+    margin-top: 1rem;
+    /*opacity: 0.3;*/
+
+}
+
+h4{
+    font-size: 26px;
+    text-align: center;
+    color: darkblue;
+}
+
+.card-body{
+    font-size: 16px;
+    text-align: left;
+
+
+}
+
+footer .nav .btn-primary{
+    margin-top: 12px;
+    margin-right: 750px;
+}
+
+button {
+    background-color: rebeccapurple;
+    color: rebeccapurple;
+    float: right;
+}
+
+.container figure{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.block{
+    margin: 2%;
+    display: flex;
+    flex-wrap: wrap;
+}
+h2{
+    text-align: center;
+    color: midnightblue;
+}
+
+.col{
+    ;
+    width: 40%;
+    height: 50vh;
+    border: darkviolet 1px solid;
+    text-align: center;
+    font-size: large;
+    color: midnightblue;
+}
+.col:nth-child(1){
+    float:left;
+    width:80px;
+}
+.col:nth-child(2) {
+    margin-left: 80px;
+}
+.text-center{
+    color: darkblue;
+}
+
+.galerie{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.images_galerie img{
+    width: 150px;
+    height: 100px;
+}
