@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Form\RegistrationType;
+use App\Repository\CommunityRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -57,11 +58,13 @@ class UserController extends AbstractController
     }
 
 
+
+
     /**
      * @param PostRepository $repository
      * @param User $user
      * @return Response
-     * @Route("/post/{id}", requirements={"id": "\d+"})
+     * @Route("/posts/{id}", requirements={"id": "\d+"})
      */
     public function posts(PostRepository $repository, User $user)
     {
@@ -71,7 +74,7 @@ class UserController extends AbstractController
 
         );
 
-        return $this->render('admin/user/post.html.twig',
+        return $this->render('admin/user/posts.html.twig',
             ['posts' => $posts,
              'user' => $user
             ]
@@ -79,6 +82,23 @@ class UserController extends AbstractController
     }
 
 
+    /**
+     * @param CommunityRepository $repository
+     * @param User $user
+     * @Route("/communities/{id}", requirements={"id": "\d+"})
+     * @return Response
+     */
+    public function communities(UserRepository $repository,User $user)
+    {
+        $communities = $user->getCommunities();
 
+        return $this->render('admin/user/communities.html.twig',
+            [
+                'communities'=>$communities,
+                'user'=>$user
+            ]
+            );
+
+    }
 
 }

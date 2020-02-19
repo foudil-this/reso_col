@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -45,9 +46,6 @@ class Community
      */
     private $posts;
 
-
-
-
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      * @Assert\Image(mimeTypesMessage="Le fichier doit etre une image",
@@ -55,6 +53,13 @@ class Community
      *     maxSizeMessage="L'image ne doit pas depasser 1 Mo")
      */
     private $image;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $creationDate;
+
+
 
     public function __toString()
     {
@@ -64,7 +69,7 @@ class Community
 
     public function __construct()
     {
-        $this->creationDate = new \DateTime();
+        $this->creationDate = new DateTime();
         $this->users = new ArrayCollection();
         $this->posts = new ArrayCollection();
 
@@ -156,9 +161,6 @@ class Community
         return $this;
     }
 
-
-
-
     public function getImage()
     {
         return $this->image;
@@ -170,5 +172,20 @@ class Community
 
         return $this;
     }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+
+
 
 }
