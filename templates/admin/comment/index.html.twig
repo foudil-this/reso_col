@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Gestion comments</h1>
+
+
+    <table class="table table-striped">
+
+        <tr>
+            <th>Id</th>
+            <th>content</th>
+            <th>Publication Date</th>
+            <th style="width: 400px"></th>
+        </tr>
+        {% for comment in comments  %}
+            <tr>
+                <td>{{ comment.id }}</td>
+                <td>{{ comment.content }}</td>
+                <td>{{ comment.publicationDate|date("d/m/Y") }}</td>
+                <td>
+                    {#                    <a class="btn btn-success" href="{{ path('app_admin_comment_posts', {'id': community.id}) }}">#}
+                    {#                        Posts#}
+                    {#                    </a>  <a class="btn btn-primary" href="{{ path('app_admin_comment_users', {'id': community.id}) }}">#}
+                    {#                        Users#}
+                    {#                    </a>#}
+                    {#                    <a href="{{ path('app_admin_comment_delete', {'id': comment.id}) }}"#}
+                    {#                       class="btn btn-danger">#}
+                    {#                        Supprimer#}
+                    {#                    </a>#}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} -admin-communities
+{% endblock %}

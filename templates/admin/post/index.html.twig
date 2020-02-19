@@ -6,30 +6,30 @@
 
     <table class="table table-striped">
 
+    <tr>
+        <th>Id</th>
+        <th>Image</th>
+        <th>Auteur</th>
+        <th>Date Publication</th>
+        <th style="width: 250px"></th>
+    </tr>
+    {% for post in posts  %}
         <tr>
-            <th>Id</th>
-            <th>Image</th>
-            <th>Auteur</th>
-            <th>Date Publication</th>
-            <th style="width: 250px"></th>
+            <td>{{ post.id }}</td>
+            <td> <img src="{{ asset('images/' ~ post.image) }}" width="40px"></td>
+            <td>{{ post.user }}</td>
+            <td>{{ post.publicationDate|date("d/m/Y") }}</td>
+            <td>
+                {#                    <a href="{{ path('app_admin_post_edit', {'id': post.id}) }}"#}
+                {#                       class="btn btn-primary">#}
+                {#                        Modifier</a>#}
+                <a href="{{ path('app_admin_post_delete', {'id': post.id}) }}"
+                   class="btn btn-danger">
+                    Supprimer</a>
+            </td>
         </tr>
-        {% for post in posts  %}
-            <tr>
-                <td>{{ post.id }}</td>
-                <td> <img src="{{ asset('images/' ~ post.image) }}" width="40px"></td>
-                <td>{{ post.user }}</td>
-                <td>{{ post.publicationDate|date("d/m/Y") }}</td>
-                <td>
-                    {#                    <a href="{{ path('app_admin_post_edit', {'id': post.id}) }}"#}
-                    {#                       class="btn btn-primary">#}
-                    {#                        Modifier</a>#}
-                    <a href="{{ path('app_admin_post_delete', {'id': post.id}) }}"
-                       class="btn btn-danger">
-                        Supprimer</a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+    {% endfor %}
+</table>
 {% endblock %}
 
 {% block title %}
