@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -116,6 +117,33 @@ class UserController extends AbstractController
     public function logout()
     {
 
+    }
+
+
+    /**
+     * @Route("/profil")
+     *
+     */
+    public function changeRegistration(Request $request, EntityManagerInterface $manager)
+    {
+
+        // creation variable pour le nom de l'ancienne image
+        $oldAvatar=null;
+
+        // creation de l'utilisateur à modifier (le connecté)
+        $userToChange=$this->getUser();
+        dump($userToChange);
+        $oldAvatar = $userToChange->getAvatar();
+        if(!is_null($oldAvatar)){
+
+        }
+
+        $userToChange->setAvatar(new File($this->getParameter('upload_dir') . $userToChange->getAvatar()));
+
+        $form = $this->createForm(RegistrationType::class, $userToChange);
+
+        return $this->render('user/register.html.twig',
+            ['form' => $form->createView()]);
     }
 
 
