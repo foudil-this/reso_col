@@ -14,15 +14,20 @@
                     <p> <strong>Createur du groupe </strong></p>
                     <strong>    {{ user.email }}    </strong> <em></em>  {{ user.firstName }} <em></em>  {{ user.lastName }} <em></em>
                 </div>
+            {% endif %}
+        {% endfor %}
 
+
+
+
+
+        {% for user in users %}
+            {% if user == community.owner %}
             {% else %}
             <div class="alert alert-secondary mt-2">
                 <strong>    {{ user.email }}    </strong> <em></em>  {{ user.firstName }} <em></em>  {{ user.lastName }}
             </div>
             {% endif %}
-        {% else %}
-            <p>Aucun membre pour ce groupe</p>
-
         {% endfor %}
 
 
@@ -42,7 +47,7 @@
 
 
                 <div class="text-left">
-                        <a href="{{ path('app_index_index') }}" class="btn btn-outline-primary btn-validation-group">Valider le groupe</a>
+                        <a href="{{ path('app_wall_index') }}" class="btn btn-outline-primary btn-validation-group">Valider le groupe</a>
                 </div>
 
         </form>

@@ -158,14 +158,14 @@
                                 <p>{{ poste.content }}</p>
                             </div>
                         </div>
-                        <div class="figure-caption">
+                        <div class="figure-caption ">
                         <img src="{{ asset('images/' ~  poste.image) }}" alt="" class="img_poste">
                     </div>
                     <div class="tool_img " style="margin-top: 3px">
                         <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
                             <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0;background-color: rgba(0,0,0,.03)"><img src="{{ asset('images/coeur2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
                             <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0"><img src="{{ asset('images/like2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                            <button type="button" class="btn btn-secondary aj_com btn-griaapli afficheNewComment" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            <button type="button" data-id-post="{{ poste.id }}" data-nom-user="{{ poste.user.id }}" class="btn btn-secondary aj_com btn-griaapli acn" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
                             <button class="btn btn-secondary btn-griaapli" type="button" data-toggle="collapse" data-target="#multiCollapseExample{{ loop.index }}" aria-expanded="false" aria-controls="multiCollapseExample2" style="padding: 0"><img src="{{ asset('images/voir_comment.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
                             {% if nom =='mur' %}
                                 {#    bouton supprimer uniquement   #}
@@ -247,16 +247,33 @@
             aria-modal="true"
             aria-hidden="true"
             tabindex="-1"
-            class="c-form">
+            class="c-form" style="display: none">
         <div role="document" class="c-form__box">
             <button
                     class="btn btn-warning close"
                     type="button"
                     aria-label="Fermer"
-                    title="Fermer cette fenêtre modale"
+                    title="Fermer cette fenÃªtre modale"
                     data-dismiss="dialog">X
             </button>
-            <h3>Ajouter un commentaire </h3>
+            <div class="ajouterposte">
+                <h3>Ajouter un poste</h3>
+                <div class="container">
+                    {{ form_start(form2) }}
+                    {{ form_row(form2.content) }}
+                    <div class="hiden">
+                        <input type="text" id="id_user" name="id_user">
+                        <input type="text" id="id_post" name="id_post">
+
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-primary" type="submit">Enregistrer</button>
+                    </div>
+
+                    {{ form_end(form2) }}
+
+                </div>
+            </div>
 
 
 
@@ -264,57 +281,93 @@
     </div>
 
 {% endblock %}
-{%  block javascripts %}
+    {%  block javascripts %}
 
-    {{ parent() }}
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
-    <script>
+        {{ parent() }}
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
+        <script>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            let  btn1=document.querySelectorAll(".anc");
-            let btn_close=document.querySelectorAll(".close");
-
-
-
-            // créer des variable pour cibler les fenetre modale de notre portfolio
-
-            let form=document.querySelector("#form2");
-
-            // cibler les bouton de fermeture
-            const zone = document.querySelectorAll('.c-form');
-
-            let btn_closes=document.querySelectorAll(".close");
+            document.addEventListener('DOMContentLoaded', function()
+            {
+                let  btn1=document.querySelectorAll(".anc");
+                let btn_close=document.querySelectorAll(".close");
+                let text_user=document.querySelector("#id_user");
+                let text_post=document.querySelector("#id_post");
 
 
 
+                // crÃ©er des variable pour cibler les fenetre modale de notre portfolio
 
-            // creer la function qui ouvre la fenetre
-            function open(event){
-                form.setAttribute('aria-hidden', false)
-            }
+                let form=document.querySelector("#form2");
 
-            btn1.addEventListener("click", open);
+                // cibler les bouton de fermeture
+                const zone = document.querySelectorAll('.c-form');
 
-
+                let btn_closes=document.querySelectorAll(".close");
 
 
-            // fermeture des fenétre modale par les bouton de classe "close"
-            // cration de la function close, zone est le tableau qui recupére tous les element div qui ont la class "c-dialog"
-            // la boucles met toutes le fenetre dialogues a hiden=true
-            function close(){
-                zone.forEach((z) =>{
-                    z.setAttribute('aria-hidden', true)
+
+                // creer la function qui ouvre la fenetre
+                function open(event){
+                    form.setAttribute('aria-hidden', false);
+                    let v1 = $(btn1).data('nomUser');
+                    let v2 = $(btn1).data('id-post');
+                    console.log(btn1);
+                    console.log(v1);
+
+                    $(text_user).val(v1);
+                    $(text_post).val(v2);
+
+
+                    $(form).show();
+                }
+
+                //btn1[0].addEventListener("click", open);
+
+
+                // ajout l'evenement a tous les btn1 de la classe "anc"
+                // btn1.forEach ((btn) =>{
+                //     btn.addEventListener('click', open);
+                //
+                // });
+
+                $(btn1).click(function (event)
+                {
+                    let form=document.querySelector("#form2");
+                    form.setAttribute('aria-hidden', false);
+                    var btn = $(this);
+                    let text_user=document.querySelector("#id_user");
+                    let text_post=document.querySelector("#id_post");
+
+                    let v1 = btn.data('nomUser');
+                    let v2 = btn.data('id-post');
+                    console.log(btn.data());
+                    $(text_user).val(v1);
+                    $(text_post).val(v2);
+
+
+                    $(form).show();
                 });
-            };
-            // ajout l'evenement a tous les btn de la classe "close"
-            btn_closes.forEach ((btn_close) =>{
-                btn_close.addEventListener('click', close);
+
+                // fermeture des fenÃ©tre modale par les bouton de classe "close"
+                // cration de la function close, zone est le tableau qui recupÃ©re tous les element div qui ont la class "c-dialog"
+                // la boucles met toutes le fenetre dialogues a hiden=true
+                function close() {
+
+                    form.setAttribute('aria-hidden', true);
+                    $(form).hide();
+
+                }
+                // ajout l'evenement a tous les btn de la classe "close"
+                //
+                btn_close[0].addEventListener('click', close);
+
+
 
             });
-        });
 
 
-    </script>
+        </script>
 
 
 {% endblock %}

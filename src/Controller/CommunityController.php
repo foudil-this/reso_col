@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Community;
 use App\Form\CommunityType;
+use App\Repository\CommunityRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -110,45 +111,75 @@ class CommunityController extends AbstractController
 
         $owner = $community->getOwner();
         dump($users[1]);
-        // test si il y a bien un email saisi dans la requete
+        // test si il y a bien quelque chose dans $_POST
+        //// if (!empty($_POST['email_user_add']))
         if($request->request->has('email_user_add')){
-            // recherche dans la table user du user ayant l'email saisi
-            $userAdded= $userRepository->findOneBy(
-                ['email' => $request->request->get('email_user_add')]
-            );
-            if(is_null($userAdded)){
-                $this->addFlash('error', 'le membre n\'est pas inscrit, son inscription est obligatoire');
-            }else{
+            $email = $request->request->get('email_user_add');
 
-                // test si le membre est deja dans l'association
-                if ($community->getUsers()->contains($userAdded)) {
-                    $this->addFlash('error', 'le membre est dejà dans cette association');
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $this->addFlash('error', 'l\'Email saisi n\'est pas valide');
+            } else {
+                // recherche dans la table user du user ayant l'email saisi
+                $userAdded= $userRepository->findOneBy(
+                    ['email' => $request->request->get('email_user_add')]
+                );
+                if(is_null($userAdded)){
+                    $this->addFlash('error', 'le membre n\'est pas inscrit, son inscription est obligatoire');
                 }else{
 
-
-
-                dump($userAdded);
-                dump($community);
-
-
-                // ajout dans community du user saisi dans le formulaire (son email)
-                $community->addUser($userAdded);
+                    // test si le membre est deja dans l'association
+                    if ($community->getUsers()->contains($userAdded)) {
+                        $this->addFlash('error', 'le membre est dejà dans cette association');
+                    }else{
 
 
 
-                // connexion à la BDD
-                $manager->persist($community);
-                $manager->flush();
+                        dump($userAdded);
+                        dump($community);
+
+
+                        // ajout dans community du user saisi dans le formulaire (son email)
+                        $community->addUser($userAdded);
+
+
+
+                        // connexion à la BDD
+                        $manager->persist($community);
+                        $manager->flush();
+                    }
                 }
             }
-        }else{
-            $this->addFlash('error', 'l\'Email saisi n\'est pas valide');
+
+
         }
 
 
         dump($request);
         return $this->render('community/addUserCommunity.html.twig', ['community' => $community,
             'users' => $users]);
+    }
+
+
+    /**
+     * @Route("/deleteuser/{id_c}/{id_u}")
+     *
+     */
+    public function deleteUserCommunity($id_c, $id_u, CommunityRepository $communityRepository, UserRepository $userRepository, EntityManagerInterface $manager)
+    {
+
+        $community = $communityRepository->find($id_c);
+        $user = $userRepository->find($id_u);
+        dump($community);
+        dump($user);
+
+        $community->removeUser($user);
+
+        $manager->persist($community);
+        $manager->flush();
+
+
+
+       return $this->redirectToRoute('app_wall_index');
     }
 
 
