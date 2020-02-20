@@ -51,6 +51,16 @@ h1 {
     color: lightskyblue;
 }
 
+
+.nav-link-userModif{
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-right: 3px;
+    padding-left: 3px;
+    margin-right: 15px;
+    color: lightskyblue;
+}
+
 /*.card-group{*/
 /*    background-image: url("../images/reseau_labyrinthe.jpg");*/
 /*    margin: 0;*/
