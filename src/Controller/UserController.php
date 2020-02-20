@@ -131,6 +131,8 @@ class UserController extends AbstractController
         $error = $utils->getLastAuthenticationError();
         $lastUsername = $utils->getLastUsername();
 
+        dump($error);
+        dump($lastUsername);
         if(!empty($error)){
             $this->addFlash('error', 'Identifiants incorrects');
         }
@@ -150,5 +152,5 @@ class UserController extends AbstractController
 
     }
 
-    
+
 }

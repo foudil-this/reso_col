@@ -1,3 +1,4 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello WallController!{% endblock %}
@@ -28,7 +29,7 @@
                                             </h2>
                                         </div>
                                         <div id="collapse{{ groupp.id }}" class="collapse show" aria-labelledby="headingOne"
-                                             data-parent="#accordionExample">
+                                             data-parent="#groupes_index">
                                             <div class="card-body">
 
                                                 {% for user in  groupp.users %}
@@ -77,18 +78,19 @@
 
 
             </div>
+            {#            _____________________________________affichage des poste et du banner ___________________________________#}
 
             <div class="col-md-9 col-sm-12" style="padding: 0">
                 <div class="row flex border border-info mt-1 rounded" style="background-color: rgba(0,0,0,.03);margin: 0">
 
 
                     <div class="col-6 mt-1">
-                        {% if nom =='mur' %}
-                            <img class="avatar" width="100" height="100" src="../images/{{ nomgroupe.image }}"/>
-                            <h3 style="color:#305480">{{ nomgroupe }}</h3>
+                        {% if nom =='afficheMurGroupe' %}
+                            <img class="avatar" width="100" height="100" src="{{ asset('images/' ~  nomgroupe.image) }}"/>
+                            <h3 style="color:#305480">{{ nomgroupe.name }}</h3>
                         {% else %}
                             {% if user.avatar is not empty %}
-                                <img class="avatar" width="100" height="100" src="../images/{{ user.avatar }}"/>
+                                <img class="avatar" width="100" height="100" src="{{ asset('images/' ~  user.avatar) }}"/>
                                 <h3 style="color:#305480">{{ user }}</h3>
                             {% else %}
                                 <img class="avatar" width="100" height="100" src="{{ asset('images/user.png') }}"/>
@@ -112,9 +114,7 @@
                 <div class="tool_img " style="margin-top: 3px">
                     <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
                         <div style="padding-right:10px;padding-left:10px;margin-right: 4px;border:2px solid gray;border-radius: 3px;background-color: #7abaff">Ajouter  :  </div>
-                        <a href="{{ path('app_wall_index', {id : nomgroupe[0].id, type:'image'}) }}">
-
-                            <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-image.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                        <a href="{{ path('app_wall_index', {id : nomgroupe.id, type:'image'}) }}"><button type="button" class="btn btn-secondary" style="padding: 0;width: 40px;height: 35px;" ><img src="{{ asset('images/icon-image.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
                         </a>
                         <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-video.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
                         <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-article.svg') }}" alt="" style="width: 30px; border-radius: 2px"></button>
@@ -139,101 +139,180 @@
                     </div>
 
                 {% endif %}
-                <!--  affichage des poste ________________________________________-->
+                <!--______________________________ affichage des poste ________________________________________-->
                 <div class="mur" >
                     {% for poste in  postes %}
-                        <div class="poste" style="border-radius: 5px;border: 1px solid gray;padding-left: 8px;padding-bottom: 8px;margin-top: 8px;">
-                            {% if poste.type == 'image' %}
-                                <div class="row card_title" style="margin-left: 0; margin-right: 0 ; margin-top: 3px;margin-bottom: 3px">
-                                    <div class="col-md-1" style="background-color: #b3d5ed">
-                                        <div class="imgAbt" style="width: 52px; ">
-                                            <img width="50" height="50" src="{{ asset('images/icon_title.png') }}" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-9 ">
-                                        <p>{{ poste.content }}</p>
-                                    </div>
+                    <div class="poste" style="border-radius: 5px;border: 1px solid gray;padding-left: 8px;padding-bottom: 8px;margin-top: 8px;">
+                        {% if poste.type == 'image' %}
+                        <div class="row card_title" style="margin-left: 0; margin-right: 2px ; margin-top: 3px;margin-bottom: 3px;border: #c9d1c6 solid 1px;">
+                            <div class="col-md-1" style="background-color: #225f97;padding: 0">
+                                <div class="imgAbt" style="width: 60px; ">
+                                    <img style="width: 100%; margin-top: 3px;margin-left: 3px;border: #1b1e21 1px solid;" src="{{ asset('../images/' ~  poste.user.avatar) }}" />
                                 </div>
-                                <div class="figure-caption ">
-                                    <img src="../images/{{ poste.image }} " alt="" class="img_poste">
-                                </div>
-                                <div class="tool_img " style="margin-top: 3px">
-                                    <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
-                                        <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0;background-color: rgba(0,0,0,.03)"><img src="{{ asset('images/coeur2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                        <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0"><img src="{{ asset('images/like2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                        <button type="button" class="btn btn-secondary aj_com btn-griaapli" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                        <button class="btn btn-secondary btn-griaapli" type="button" data-toggle="collapse" data-target="#multiCollapseExample{{ loop.index }}" aria-expanded="false" aria-controls="multiCollapseExample2" style="padding: 0"><img src="{{ asset('images/voir_comment.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                        {% if nom =='mur' %}
-                                            {#    bouton supprimer uniquement   #}
-                                            <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0"><img src="{{ asset('images/delete_post.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-
-                                        {% endif %}
-                                    </div>
-                                    <div><em style="color: #0f6674;width: 100%; text-align: right">{{ poste.publicationDate.format('d-m-Y') }} du post :{{ loop.index }}</em></div>
-                                </div>
-                            {% endif %}
-                            {% if poste.type == 'video' %}
-                                <div class="row card_title" style="margin-left: 0; margin-right: 0 ; margin-top: 3px;margin-bottom: 3px">
-                                    <div class="col-md-1" style="background-color: #b3d5ed">
-                                        <div class="imgAbt" style="width: 52px; ">
-                                            <img width="50" height="50" src="{{ asset('images/icon_title.png') }}" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-9 ">
-                                        <p>{{ poste.content }}</p>
-                                    </div>
-                                </div>
-                                <div class="figure-caption ">
-                                    <iframe src="{{ poste.image }}" height="360" width="640" allowfullscreen="" frameborder="0"></iframe>
-                                </div>
-                                <div class="tool_img " style="margin-top: 3px">
-                                    <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
-                                        <button type="button" class="btn btn-secondary" style="padding: 0"><img src="{{ asset('images/coeur2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                        <button type="button" class="btn btn-secondary" style="padding: 0"><img src="{{ asset('images/like2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                        <button type="button" class="btn btn-secondary aj_com" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#multiCollapseExample{{ loop.index }}" aria-expanded="false" aria-controls="multiCollapseExample2" style="padding: 0"><img src="{{ asset('image/voir_comment.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                                    </div>
-                                    <div><em style="color: #0f6674;width: 100%; text-align: right">{{ poste.publicationDate.format('d-m-Y') }} du post :{{ loop.index }}</em></div>
-                                </div>
-                            {% endif %}
-                            <div
-                                    style="padding: 10px; background-color: rgba(0,0,0,.03); width: 100%; border-radius: 5px;margin-top: 5px "
-                                    class="box_comment" >
-                                <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}" style="background-color: rgba(0,0,0,.03)">
-                                    <div class="card card-body" >
-                                        {% for comment in poste.comments %}
-                                            <div class="row card_title" style="margin-left: 0; margin-right: 0 ; margin-top: 3px;margin-bottom: 3px; background-color: white ; width: 100%;border: 2px solid gray  ">
-                                                <div class="col-md-2" style="background-color: #b3d5ed; padding: 4px">
-                                                    <div class="imgAbt" style="width: 52px; ">
-                                                        <img width="50" height="50" src="{{ asset('images/user.png') }}" />
-
-                                                    </div>
-                                                    <p style="font-size: 13px">{{ comment.getUser().firstName }}</p>
-                                                </div>
-                                                <div class="col-md-10 ">
-                                                    <p>{{ comment.content }}</p>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
+                                <p style="color:white">{{ poste.user.firstName }}</p>
+                            </div>
+                            <div class="col-md-9 ">
+                                <p>{{ poste.content }}</p>
                             </div>
                         </div>
-                    {% endfor %}
+                        <div class="figure-caption " ">
+                        <img src="{{ asset('images/' ~  poste.image) }}" alt="" class="img_poste">
+                    </div>
+                    <div class="tool_img " style="margin-top: 3px">
+                        <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
+                            <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0;background-color: rgba(0,0,0,.03)"><img src="{{ asset('images/coeur2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0"><img src="{{ asset('images/like2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            <button type="button" class="btn btn-secondary aj_com btn-griaapli afficheNewComment" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            <button class="btn btn-secondary btn-griaapli" type="button" data-toggle="collapse" data-target="#multiCollapseExample{{ loop.index }}" aria-expanded="false" aria-controls="multiCollapseExample2" style="padding: 0"><img src="{{ asset('images/voir_comment.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            {% if nom =='mur' %}
+                                {#    bouton supprimer uniquement   #}
+                                <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0"><img src="{{ asset('images/delete_post.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+
+                            {% endif %}
+                        </div>
+                        <div><em style="color: #0f6674;width: 100%; text-align: right">{{ poste.publicationDate.format('d-m-Y') }} du post :{{ loop.index }}</em></div>
+                    </div>
+                    {% endif %}
+                    {% if poste.type == 'video' %}
+                        <div class="row card_title" style="margin-left: 0; margin-right: 0 ; margin-top: 3px;margin-bottom: 3px">
+                            <div class="col-md-1" style="background-color: #b3d5ed">
+                                <div class="imgAbt" style="width: 52px; ">
+                                    <img width="50" height="50" src="{{ asset('images/icon_title.png') }}" />
+                                </div>
+                            </div>
+                            <div class="col-md-9 ">
+                                <p>{{ poste.content }}</p>
+                            </div>
+                        </div>
+                        <div class="figure-caption ">
+                            <iframe src="{{ poste.image }}" height="360" width="640" allowfullscreen="" frameborder="0"></iframe>
+                        </div>
+                        <div class="tool_img " style="margin-top: 3px">
+                            <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
+                                <button type="button" class="btn btn-secondary" style="padding: 0"><img src="{{ asset('images/coeur2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                                <button type="button" class="btn btn-secondary" style="padding: 0"><img src="{{ asset('images/like2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                                <button type="button" class="btn btn-secondary aj_com" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#multiCollapseExample{{ loop.index }}" aria-expanded="false" aria-controls="multiCollapseExample2" style="padding: 0"><img src="{{ asset('image/voir_comment.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            </div>
+                            <div><em style="color: #0f6674;width: 100%; text-align: right">{{ poste.publicationDate.format('d-m-Y') }} du post :{{ loop.index }}</em></div>
+                        </div>
+                    {% endif %}
+                    <div
+                            style="padding: 10px; background-color: rgba(0,0,0,.03); width: 100%; border-radius: 5px;margin-top: 5px "
+                            class="box_comment" >
+                        <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}" style="background-color: rgba(0,0,0,.03)">
+                            <div class="card card-body" >
+                                {% for comment in poste.comments %}
+                                    <div class="row card_title" style="margin-left: 0; margin-right: 0 ; margin-top: 3px;margin-bottom: 3px; background-color: white ; width: 100%;border: 2px solid gray  ">
+                                        <div class="col-md-2" style="background-color: #b3d5ed; padding: 4px">
+                                            <div class="imgAbt" style="width: 52px; ">
+                                                <img width="50" height="50" src="{{ asset('images/user.png') }}" />
+
+                                            </div>
+                                            <p style="font-size: 13px">{{ comment.getUser().firstName }}</p>
+                                        </div>
+                                        <div class="col-md-10 ">
+                                            <p>{{ comment.content }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
+        </div>
+
+    </div>
+    </div>
+
+    {#    _____________________________________formulaire ajouter commebtaire_________________________________________ #}
+
+    <div
+            id="form2"
+            role="dialog"
+            aria-labelledby="dialog-title"
+            aria-describedby="dialog-desc"
+            aria-modal="true"
+            aria-hidden="true"
+            tabindex="-1"
+            class="c-form">
+        <div role="document" class="c-form__box">
+            <button
+                    class="btn btn-warning close"
+                    type="button"
+                    aria-label="Fermer"
+                    title="Fermer cette fenêtre modale"
+                    data-dismiss="dialog">X
+            </button>
+            <h3>Ajouter un commentaire </h3>
+
+
 
         </div>
     </div>
+
 {% endblock %}
-
-
-
-{% block javascripts %}
-
+{%  block javascripts %}
 
     {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let  btn1=document.querySelectorAll(".anc");
+            let btn_close=document.querySelectorAll(".close");
+
+
+
+            // créer des variable pour cibler les fenetre modale de notre portfolio
+
+            let form=document.querySelector("#form2");
+
+            // cibler les bouton de fermeture
+            const zone = document.querySelectorAll('.c-form');
+
+            let btn_closes=document.querySelectorAll(".close");
+
+
+
+
+            // creer la function qui ouvre la fenetre
+            function open(event){
+                form.setAttribute('aria-hidden', false)
+            }
+
+            btn1.addEventListener("click", open);
+
+
+
+
+            // fermeture des fenétre modale par les bouton de classe "close"
+            // cration de la function close, zone est le tableau qui recupére tous les element div qui ont la class "c-dialog"
+            // la boucles met toutes le fenetre dialogues a hiden=true
+            function close(){
+                zone.forEach((z) =>{
+                    z.setAttribute('aria-hidden', true)
+                });
+            };
+            // ajout l'evenement a tous les btn de la classe "close"
+            btn_closes.forEach ((btn_close) =>{
+                btn_close.addEventListener('click', close);
+
+            });
+        });
+
+
+    </script>
+
+
 {% endblock %}
+
+
+
+
+
 
 
 
