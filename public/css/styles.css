@@ -162,3 +162,14 @@ h2{
         display: inline;
     }
 }
+
+.c-form{
+    position: fixed;
+    top: 300px;
+    left:700px;
+    width: 500px;
+    height: 300px;
+    border: #7db3cb 1px solid;
+    background-color: #ecf1f8;
+    border-radius: 8px;
+}

@@ -3,7 +3,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Post;
+use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\CommentRepository;
 use App\Repository\CommunityRepository;
@@ -130,6 +132,43 @@ class WallController extends AbstractController
         dump($nom);
         dump($commu);
 
+        $comment = new Comment();
+        dump($comment);
+        $form2 = $this->createForm(CommentType::class, $comment);
+        $form2->handleRequest($request);
+        if ($form2->isSubmitted())
+        {
+
+            if ($form2->isValid())
+            {
+
+
+                // $utilisateur =$userRepository->findOneBy(['id'=> $_POST['id_user']]);
+                $postes=$postRepository->findOneBy(['id'=>$_POST['id_post']]);
+                $comment->setUser($this->getUser());
+                $comment->setPost($postes);
+
+
+
+
+
+
+                $manager->persist($comment);
+                $manager->flush();
+
+                $this->addFlash('success', 'Votre post a était rajouté');
+
+
+
+
+                return $this->redirectToRoute('app_wall_index', ['id' => $id]);
+
+
+            } else {
+                $this->addFlash('error', 'le formulaire contient des erreurs');
+            }
+        }
+
         return $this->render('wall/index.html.twig',
 
             [
@@ -148,11 +187,21 @@ class WallController extends AbstractController
                 'user' => $this->getUser(),
                 'vue' => $vue_formulaire,
                 'form' => $form->createView(),
-
+                'form2' => $form2->createView()
 
             ]
 
         );
     }
 }
+
+
+
+
+
+
+
+
+
+
 
