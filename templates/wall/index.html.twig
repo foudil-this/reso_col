@@ -10,7 +10,7 @@
             <div class="col-md-3 col-sm-12">
                 <div class="contien_liste">
                     <ul class="list-group">
-                        <h3><img src="{{ asset('images/admin.jpg') }}" alt="" width="30" height="30">Mes groupe
+                        <h3><img src="{{ asset('images/admin.jpg') }}" alt="" width="30" height="30" style="margin-right: 25px; ">Mes groupes
                             <button id="btn_groupes_index">Voir</button>
                         </h3>
                         <div class="accordion " id="groupes_index">
@@ -20,15 +20,16 @@
                                     <div class="card">
                                         <div class="card-header" id="heading{{ groupp.id }}">
                                             <h2 class="mb-0 row justify-content-between">
-                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ groupp.id }}"
+                                                <button class="btn btn-link" style="color:#17a2b8; font-weight: bold" type="button" data-toggle="collapse" data-target="#collapse{{ groupp.id }}"
                                                         aria-expanded="true" aria-controls="collapse{{ groupp.id }}">
                                                     {{ groupp.name }}
-                                                    <a href="{{ path('app_wall_index',{'id': groupp.id}) }}"><img src="{{ asset('images/aller.png') }}" alt="" width="30" height="30"></a>
+                                                    <a href="{{ path('app_wall_index',{'id': groupp.id}) }}"><i class="fas fa-chevron-right"
+                                                                                                                style="color: royalblue; margin-left: 15px;"></i></a>
                                                 </button>
                                                 <!-- <h5 class="  ">{ groupp. }}</h5> -->
                                             </h2>
                                         </div>
-                                        <div id="collapse{{ groupp.id }}" class="collapse show" aria-labelledby="headingOne"
+                                        <div id="collapse{{ groupp.id }}" class="collapse" aria-labelledby="headingOne"
                                              data-parent="#groupes_index">
                                             <div class="card-body">
 
@@ -61,7 +62,8 @@
                         </div>
                     </ul>
                 </div>
-                <h3><img src="{{ asset('images/users2.jpg') }}" alt="" width="30" height="30">Community</h3>
+                <br>
+                <h3 style="color:#17a2b8"><img src="{{ asset('images/users2.jpg') }}" alt="" width="30" height="30" style="margin-right: 25px; margin-bottom: 25px">Community</h3>
 
                 {% if groupesuser is defined  %}
                     {#       affiche les nom des groupe ou on est user mais pas proprio                 #}
@@ -111,7 +113,7 @@
 
 
                     </div>
-                    <div class="col-6 mt-3 d-flex flex-row-reverse bd-highlight">
+                    <div class="col-6 mt-3 d-flex flex-row-reverse bd-highlight" style="margin-right: 10px">
 
                         <form class="form-inline my-2 my-lg-0">
                             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -124,12 +126,12 @@
                 <br>
                 <div class="tool_img " style="margin-top: 3px">
                     {% if nom != 'afficheMuruser' %}
-                        <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
-                            <div style="padding-right:10px;padding-left:10px;margin-right: 4px;border:2px solid gray;border-radius: 3px;background-color: #7abaff">Ajouter  :  </div>
-                            <a href="{{ path('app_wall_index', {id : nomgroupe.id, type:'image'}) }}"><button type="button" class="btn btn-secondary" style="padding: 0;width: 40px;height: 35px;" ><img src="{{ asset('images/icon-image.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                        <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px;margin-right: 10px;margin-left: 10px;">
+                            <div style="margin-top:10px ;margin-right: 25px; color:#17a2b8;"><strong><em>Envoyez vos posts...</em></strong> </div>
+                            <a href="{{ path('app_wall_index', {id : nomgroupe.id, type:'image'}) }}" class="btn btn-info mr-2"><i class="fas fa-camera"></i>
                             </a>
-                            <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-video.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                            <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-article.svg') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><i class="fas fa-video"></i></button>
+                            <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><i class="far fa-file-alt"></i></button>
 
 
                         </div>
@@ -137,9 +139,10 @@
                     {% endif %}
 
                 </div>
+                <br>
                 {% if vue %}
                     <div class="ajouterposte">
-                        <h3>Ajouter un poste</h3>
+                        <h3 style="margin-left: 13px; margin-top: 20px;margin-bottom: 20px" >Ajouter un poste</h3>
                         <div class="container">
                             {{ form_start(form) }}
                             {{ form_row(form.content) }}
@@ -155,37 +158,40 @@
 
                 {% endif %}
                 <!--______________________________ affichage des poste ________________________________________-->
-                <div class="mur" >
+                <div class="mur" style="margin-right: 10px">
                     {% for poste in  postes %}
                     <div class="poste" style="border-radius: 5px;border: 1px solid gray;padding-left: 8px;padding-bottom: 8px;margin-top: 8px;">
                         {% if poste.type == 'image' %}
-                        <div class="row card_title" style="margin-left: 0; margin-right: 2px ; margin-top: 3px;margin-bottom: 3px;border: #c9d1c6 solid 1px;">
-                            <div class="col-md-1" style="background-color: #225f97;padding: 0">
-                                <div class="imgAbt" style="width: 60px; ">
+                        <div class="row card_title" style="margin-left: 0; margin-right: 2px ; margin-top: 3px;margin-bottom: 3px;">
+                            <div class="col-md-1" style="padding: 0; margin-top: 12px;">
+                                <div class="imgAbt" style="width: 50px;height: 50px ">
                                     <img style="width: 100%; margin-top: 3px;margin-left: 3px;border: #1b1e21 1px solid;" src="{{ asset('../images/' ~  poste.user.avatar) }}" />
                                 </div>
                                 <p style="color:white">{{ poste.user.firstName }}</p>
                             </div>
-                            <div class="col-md-9 ">
+                            <div class="col-md-9 " style="padding-top: 30px;">
                                 <p>{{ poste.content }}</p>
                             </div>
                         </div>
-                        <div class="figure-caption " ">
-                        <img src="{{ asset('images/' ~  poste.image) }}" alt="" class="img_poste">
+                        <br>
+                        <div class="figure-caption " style="margin-top: 10px; margin-bottom: 10px;">
+                        <img src="{{ asset('images/' ~  poste.image) }}" alt="" class="img_poste" style="margin-top: 20px;width: 500px">
                     </div>
-                    <div class="tool_img " style="margin-top: 3px">
+                    <div class="tool_img " style="margin-top: 3px; text-align: right">
                         <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
-                            <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0;background-color: rgba(0,0,0,.03)"><img src="{{ asset('images/coeur2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            <button type="button" style="color:red;" class="btn btn-info mr-2">
+                                <i class="fas fa-heart"></i></button>
                             <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0"><img src="{{ asset('images/like2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                            <button type="button" data-id-post="{{ poste.id }}" data-nom-user="{{ poste.user.id }}" class="btn btn-secondary aj_com btn-griaapli anc" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                            <button class="btn btn-secondary btn-griaapli" type="button" data-toggle="collapse" data-target="#multiCollapseExample{{ loop.index }}" aria-expanded="false" aria-controls="multiCollapseExample2" style="padding: 0"><img src="{{ asset('images/voir_comment.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            <button type="button" data-id-post="{{ poste.id }}" data-nom-user="{{ poste.user.id }}" class="btn btn-info mr-2 anc" style="color:whitesmoke;"><i class="fas fa-comments"></i></button>
+                            <button class="btn btn-info btn-griaapli" type="button" data-toggle="collapse" data-target="#multiCollapseExample{{ loop.index }}" aria-expanded="false" aria-controls="multiCollapseExample2" style="color:greenyellow; height: 35px"><i
+                                        class="fas fa-comment"></i></button>
                             {% if nom =='mur' %}
                                 {#    bouton supprimer uniquement   #}
                                 <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0"><img src="{{ asset('images/delete_post.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
 
                             {% endif %}
                         </div>
-                        <div><em style="color: #0f6674;width: 100%; text-align: right">{{ poste.publicationDate.format('d-m-Y') }} du post :{{ loop.index }}</em></div>
+                        <div><em style="color: #0f6674;width: 100%; text-align: right; margin-right: 10px">{{ poste.publicationDate.format('d-m-Y') }} du post :{{ loop.index }}</em></div>
                     </div>
                     {% endif %}
                     {% if poste.type == 'video' %}
@@ -227,7 +233,14 @@
                                             <p style="font-size: 13px">{{ comment.getUser().firstName }}</p>
                                         </div>
                                         <div class="col-md-10 ">
-                                            <p>{{ comment.content }}</p>
+                                            {% if comment.status == true %}
+                                                <p>{{ comment.content }}</p>
+                                                {% else %}
+                                                <div class="alert alert-danger" role="alert">
+                                                    Ce commentaire a été modéré
+                                                </div>
+                                            {% endif %}
+
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -263,7 +276,7 @@
                     data-dismiss="dialog">X
             </button>
             <div class="ajouterposte">
-                <h3>Ajouter un poste</h3>
+                <h3 style="color: darkblue">Ajouter un commentaire</h3>
                 <div class="container">
                     {{ form_start(form2) }}
                     {{ form_row(form2.content) }}
@@ -380,6 +393,65 @@
 
 
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

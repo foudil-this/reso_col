@@ -60,7 +60,9 @@ h1 {
     margin-right: 15px;
     color: lightskyblue;
 }
-
+.main-container{
+    margin-top: 50px;
+}
 /*.card-group{*/
 /*    background-image: url("../images/reseau_labyrinthe.jpg");*/
 /*    margin: 0;*/
@@ -153,6 +155,14 @@ h2{
 }
 
 
+
+
+
+
+
+
+
+
 @media (max-width: 576px) {
     #groupes_index {
         display: none;
@@ -162,4 +172,3 @@ h2{
         display: inline;
     }
 }
-
