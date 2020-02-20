@@ -11,6 +11,7 @@
             <th>Image</th>
             <th>Auteur</th>
             <th>Date Publication</th>
+            <th>Status</th>
             <th style="width: 400px"></th>
         </tr>
         {% for post in posts %}
@@ -19,6 +20,12 @@
                 <td><img src="{{ asset('images/' ~ post.image) }}" width="40px"></td>
                 <td>{{ post.user }}</td>
                 <td>{{ post.publicationDate|date("d/m/Y") }}</td>
+                {% if post.status==true %}
+                    <td>ok</td>
+                    {% else %}
+                    <td>modéré</td>
+                {% endif %}
+
                 <td>
                     <a href="{{ path('app_admin_post_detail', {'id': post.id}) }}"
                        class="btn btn-success">
@@ -28,9 +35,9 @@
                         comments</a>
                     <a href="{{ path('app_admin_post_delete', {'id': post.id}) }}"
                        class="btn btn-danger">
-                        Delete</a>
+                        modérer</a>
 
-
+{% dump(post.status) %}
                 </td>
             </tr>
         {% endfor %}

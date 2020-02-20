@@ -62,6 +62,11 @@ class Post
      */
     private $community;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status=true;
+
     public function __construct()
     {
         $this->publicationDate = new \DateTime();
@@ -174,6 +179,18 @@ class Post
     public function setCommunity(?Community $community): self
     {
         $this->community = $community;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

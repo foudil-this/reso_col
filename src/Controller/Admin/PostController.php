@@ -46,11 +46,11 @@ class PostController extends AbstractController
      */
     public function delete(EntityManagerInterface $manager, Post $post)
     {
-
+        $post->setStatus(false);
         // suppression de la categorie en bdd
-        $manager->remove($post);
+        $manager->persist($post);
         $manager->flush();
-        $this->addFlash('success', 'Le post est supprimée');
+        $this->addFlash('success', 'Le post est modéré');
 
         return $this->redirectToRoute('app_admin_post_index');
 
