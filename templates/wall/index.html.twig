@@ -33,14 +33,22 @@
                                             <div class="card-body">
 
                                                 {% for user in  groupp.users %}
+                                                    {% if user == groupp.owner %}
+                                                    {% else %}
                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                         {{ user.firstName }}
-                                                        <a href="">
-                                                            <button></button>
+                                                        <a href="{{ path('app_community_deleteusercommunity', {'id_u' : user.id, 'id_c' : groupp.id }) }}">
+                                                            <button type="button" class="btn"><img style="width: 20px" src="{{ asset('images/close-icon-41.jpg') }}" alt=""></button>
                                                         </a>
                                                     </li>
-
+                                                    {% endif %}
                                                 {% endfor %}
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                                                        <a href="{{ path('app_community_addusercommunity', {'id' : groupp.id }) }}">
+                                                            <button type="button" class="btn btn-outline-primary">Ajouter un membre</button>
+                                                        </a>
+                                                    </li>
                                             </div>
                                         </div>
                                     </div>
@@ -115,15 +123,19 @@
                 </div>
                 <br>
                 <div class="tool_img " style="margin-top: 3px">
-                    <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
-                        <div style="padding-right:10px;padding-left:10px;margin-right: 4px;border:2px solid gray;border-radius: 3px;background-color: #7abaff">Ajouter  :  </div>
-                        <a href="{{ path('app_wall_index', {id : nomgroupe.id, type:'image'}) }}"><button type="button" class="btn btn-secondary" style="padding: 0;width: 40px;height: 35px;" ><img src="{{ asset('images/icon-image.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                        </a>
-                        <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-video.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                        <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-article.svg') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                    {% if nom != 'afficheMuruser' %}
+                        <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
+                            <div style="padding-right:10px;padding-left:10px;margin-right: 4px;border:2px solid gray;border-radius: 3px;background-color: #7abaff">Ajouter  :  </div>
+                            <a href="{{ path('app_wall_index', {id : nomgroupe.id, type:'image'}) }}"><button type="button" class="btn btn-secondary" style="padding: 0;width: 40px;height: 35px;" ><img src="{{ asset('images/icon-image.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            </a>
+                            <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-video.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            <button type="button" class="btn btn-secondary" style="padding: 0;width: 40px"><img src="{{ asset('images/icon-article.svg') }}" alt="" style="width: 30px; border-radius: 2px"></button>
 
 
-                    </div>
+                        </div>
+
+                    {% endif %}
+
                 </div>
                 {% if vue %}
                     <div class="ajouterposte">
@@ -158,14 +170,14 @@
                                 <p>{{ poste.content }}</p>
                             </div>
                         </div>
-                        <div class="figure-caption ">
+                        <div class="figure-caption " ">
                         <img src="{{ asset('images/' ~  poste.image) }}" alt="" class="img_poste">
                     </div>
                     <div class="tool_img " style="margin-top: 3px">
                         <div class="btn-group mr-2" role="group" aria-label="First group" style="height: 35px">
                             <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0;background-color: rgba(0,0,0,.03)"><img src="{{ asset('images/coeur2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
                             <button type="button" class="btn btn-secondary btn-griaapli" style="padding: 0"><img src="{{ asset('images/like2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
-                            <button type="button" data-id-post="{{ poste.id }}" data-nom-user="{{ poste.user.id }}" class="btn btn-secondary aj_com btn-griaapli acn" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
+                            <button type="button" data-id-post="{{ poste.id }}" data-nom-user="{{ poste.user.id }}" class="btn btn-secondary aj_com btn-griaapli anc" style="padding: 0"><img src="{{ asset('images/addcomment2.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
                             <button class="btn btn-secondary btn-griaapli" type="button" data-toggle="collapse" data-target="#multiCollapseExample{{ loop.index }}" aria-expanded="false" aria-controls="multiCollapseExample2" style="padding: 0"><img src="{{ asset('images/voir_comment.png') }}" alt="" style="width: 30px; border-radius: 2px"></button>
                             {% if nom =='mur' %}
                                 {#    bouton supprimer uniquement   #}
@@ -215,14 +227,7 @@
                                             <p style="font-size: 13px">{{ comment.getUser().firstName }}</p>
                                         </div>
                                         <div class="col-md-10 ">
-                                            {% if comment.status == true %}
-                                                <p>{{ comment.content }}</p>
-                                            {% else %}
-                                                <div class="alert alert-danger" role="alert">
-                                                    Ce commentaire a été modéré
-                                                </div>
-                                            {% endif %}
-
+                                            <p>{{ comment.content }}</p>
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -247,13 +252,14 @@
             aria-modal="true"
             aria-hidden="true"
             tabindex="-1"
-            class="c-form" style="display: none">
+            class="c-form"
+            style="display: none">
         <div role="document" class="c-form__box">
             <button
                     class="btn btn-warning close"
                     type="button"
                     aria-label="Fermer"
-                    title="Fermer cette fenÃªtre modale"
+                    title="Fermer cette fenêtre modale"
                     data-dismiss="dialog">X
             </button>
             <div class="ajouterposte">
@@ -272,102 +278,105 @@
 
                     {{ form_end(form2) }}
 
+
+
                 </div>
             </div>
 
-
-
-        </div>
-    </div>
-
 {% endblock %}
-    {%  block javascripts %}
+{%  block javascripts %}
 
-        {{ parent() }}
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
-        <script>
 
-            document.addEventListener('DOMContentLoaded', function()
-            {
-                let  btn1=document.querySelectorAll(".anc");
-                let btn_close=document.querySelectorAll(".close");
+
+    {{ parent() }}
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" ></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function()
+        {
+            let  btn1=document.querySelectorAll(".anc");
+            let btn_close=document.querySelectorAll(".close");
+            let text_user=document.querySelector("#id_user");
+            let text_post=document.querySelector("#id_post");
+
+
+
+            // crÃ©er des variable pour cibler les fenetre modale de notre portfolio
+
+            let form=document.querySelector("#form2");
+
+            // cibler les bouton de fermeture
+            const zone = document.querySelectorAll('.c-form');
+
+            let btn_closes=document.querySelectorAll(".close");
+
+
+
+            // creer la function qui ouvre la fenetre
+            function open(event){
+                form.setAttribute('aria-hidden', false);
+                let v1 = $(btn1).data('nomUser');
+                let v2 = $(btn1).data('id-post');
+                console.log(btn1);
+                console.log(v1);
+
+                $(text_user).val(v1);
+                $(text_post).val(v2);
+
+
+                $(form).show();
+            }
+
+            //btn1[0].addEventListener("click", open);
+
+
+            // ajout l'evenement a tous les btn1 de la classe "anc"
+            // btn1.forEach ((btn) =>{
+            //     btn.addEventListener('click', open);
+            //
+            // });
+
+            $(btn1).click(function (event) {
+                let form=document.querySelector("#form2");
+                form.setAttribute('aria-hidden', false);
+                var btn = $(this);
                 let text_user=document.querySelector("#id_user");
                 let text_post=document.querySelector("#id_post");
 
+                let v1 = btn.data('nomUser');
+                let v2 = btn.data('id-post');
+                console.log(btn.data());
+                $(text_user).val(v1);
+                $(text_post).val(v2);
 
 
-                // crÃ©er des variable pour cibler les fenetre modale de notre portfolio
-
-                let form=document.querySelector("#form2");
-
-                // cibler les bouton de fermeture
-                const zone = document.querySelectorAll('.c-form');
-
-                let btn_closes=document.querySelectorAll(".close");
-
-
-
-                // creer la function qui ouvre la fenetre
-                function open(event){
-                    form.setAttribute('aria-hidden', false);
-                    let v1 = $(btn1).data('nomUser');
-                    let v2 = $(btn1).data('id-post');
-                    console.log(btn1);
-                    console.log(v1);
-
-                    $(text_user).val(v1);
-                    $(text_post).val(v2);
-
-
-                    $(form).show();
-                }
-
-                //btn1[0].addEventListener("click", open);
-
-
-                // ajout l'evenement a tous les btn1 de la classe "anc"
-                // btn1.forEach ((btn) =>{
-                //     btn.addEventListener('click', open);
-                //
-                // });
-
-                $(btn1).click(function (event)
-                {
-                    let form=document.querySelector("#form2");
-                    form.setAttribute('aria-hidden', false);
-                    var btn = $(this);
-                    let text_user=document.querySelector("#id_user");
-                    let text_post=document.querySelector("#id_post");
-
-                    let v1 = btn.data('nomUser');
-                    let v2 = btn.data('id-post');
-                    console.log(btn.data());
-                    $(text_user).val(v1);
-                    $(text_post).val(v2);
-
-
-                    $(form).show();
-                });
-
-                // fermeture des fenÃ©tre modale par les bouton de classe "close"
-                // cration de la function close, zone est le tableau qui recupÃ©re tous les element div qui ont la class "c-dialog"
-                // la boucles met toutes le fenetre dialogues a hiden=true
-                function close() {
-
-                    form.setAttribute('aria-hidden', true);
-                    $(form).hide();
-
-                }
-                // ajout l'evenement a tous les btn de la classe "close"
-                //
-                btn_close[0].addEventListener('click', close);
-
-
-
+                $(form).show();
             });
 
+            // fermeture des fenÃ©tre modale par les bouton de classe "close"
+            // cration de la function close, zone est le tableau qui recupÃ©re tous les element div qui ont la class "c-dialog"
+            // la boucles met toutes le fenetre dialogues a hiden=true
+            function close() {
 
-        </script>
+                form.setAttribute('aria-hidden', true);
+                $(form).hide();
+
+            }
+            // ajout l'evenement a tous les btn de la classe "close"
+            //
+            btn_close[0].addEventListener('click', close);
+
+
+
+        });
+
+
+    </script>
+
+
+
+
+
 
 
 {% endblock %}
