@@ -11,6 +11,14 @@
         {{ form_row(form.plainPassword) }}
         {{ form_row(form.avatar) }}
 
+        {% if oldAvatar is not null %}
+            <p>
+                Image Actuelle :
+                <img src="{{ asset('images/'~ oldAvatar) }}" height="100px">
+            </p>
+            <p></p>
+        {% endif %}
+
         <div class="text-right">
             <button type="submit" class="btn btn-primary">
                 Enregistrer
@@ -25,4 +33,5 @@
 {% block title %}
     {{ parent() }} - inscription
 {% endblock %}
+
 
