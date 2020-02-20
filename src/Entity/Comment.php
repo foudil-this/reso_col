@@ -40,6 +40,11 @@ class Comment
      */
     private $post;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status=true;
+
     public function __construct()
     {
         $this->publicationDate = new \DateTime();
@@ -94,6 +99,18 @@ class Comment
     public function setPost(?Post $post): self
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

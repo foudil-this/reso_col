@@ -46,6 +46,7 @@ class PostController extends AbstractController
      */
     public function delete(EntityManagerInterface $manager, Post $post)
     {
+
         // suppression de la categorie en bdd
         $manager->remove($post);
         $manager->flush();
@@ -61,8 +62,7 @@ class PostController extends AbstractController
      * @param Post $post
      * @return Response
      */
-    public function
-    comments(PostRepository $repository, Post $post)
+    public function comments(PostRepository $repository, Post $post)
     {
         $comments = $post->getComments();
         return $this->render('admin/post/comments.html.twig',
@@ -72,4 +72,21 @@ class PostController extends AbstractController
             ]
         );
     }
+
+    /**
+     * @param PostRepository $repository
+     * @param Post $post
+     * @Route("/detail{id}", requirements={"id": "\d+"})
+     * @return Response
+     */
+    public function detail(PostRepository $repository, Post $post)
+    {
+        return $this->render('admin/post/detail.html.twig',
+            [
+                'post'=>$post
+            ]
+        );
+    }
+
+
 }

@@ -23,7 +23,12 @@
                 {#                        Modifier</a>#}
                 <a href="{{ path('app_admin_post_delete', {'id': post.id}) }}"
                    class="btn btn-danger">
-                    Supprimer</a>
+                    Supprimer
+                </a>
+                <a href="{{ path('app_admin_post_detail', {'id': post.id}) }}"
+                   class="btn btn-success">
+                    detail
+                </a>
             </td>
         </tr>
     {% endfor %}

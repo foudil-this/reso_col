@@ -25,13 +25,15 @@
                 <td>
                                        <a class="btn btn-success" href="{{ path('app_admin_community_posts', {'id': community.id}) }}">
                         Posts
-                    </a>  <a class="btn btn-primary" href="{{ path('app_admin_community_users', {'id': community.id}) }}">
+                    </a>
+                    <a class="btn btn-primary" href="{{ path('app_admin_community_users', {'id': community.id}) }}">
                         Users
                     </a>
                     <a href="{{ path('app_admin_community_delete', {'id': community.id}) }}"
                        class="btn btn-danger">
                         Supprimer
                     </a>
+
                 </td>
             </tr>
         {% endfor %}

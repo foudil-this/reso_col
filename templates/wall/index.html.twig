@@ -33,22 +33,14 @@
                                             <div class="card-body">
 
                                                 {% for user in  groupp.users %}
-                                                    {% if user == groupp.owner %}
-                                                    {% else %}
                                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                                         {{ user.firstName }}
-                                                        <a href="{{ path('app_community_deleteusercommunity', {'id_u' : user.id, 'id_c' : groupp.id }) }}">
-                                                            <button type="button" class="btn"><img style="width: 20px" src="{{ asset('images/close-icon-41.jpg') }}" alt=""></button>
+                                                        <a href="">
+                                                            <button></button>
                                                         </a>
                                                     </li>
-                                                    {% endif %}
-                                                {% endfor %}
-                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
 
-                                                        <a href="{{ path('app_community_addusercommunity', {'id' : groupp.id }) }}">
-                                                            <button type="button" class="btn btn-outline-primary">Ajouter un membre</button>
-                                                        </a>
-                                                    </li>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>
@@ -223,7 +215,14 @@
                                             <p style="font-size: 13px">{{ comment.getUser().firstName }}</p>
                                         </div>
                                         <div class="col-md-10 ">
-                                            <p>{{ comment.content }}</p>
+                                            {% if comment.status == true %}
+                                                <p>{{ comment.content }}</p>
+                                            {% else %}
+                                                <div class="alert alert-danger" role="alert">
+                                                    Ce commentaire a été modéré
+                                                </div>
+                                            {% endif %}
+
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -239,7 +238,6 @@
     </div>
 
     {#    _____________________________________formulaire ajouter commebtaire_________________________________________ #}
-
 
     <div
             id="form2"
@@ -373,21 +371,6 @@
 
 
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
