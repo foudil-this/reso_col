@@ -24,11 +24,11 @@
                 <td>{{ comment.content }}</td>
                 <td>{{ comment.publicationDate|date("d/m/Y") }}</td>
                 <td>
-                    <a class="btn btn-success" href="{{ path('app_wall_murcommunity', {'id': comment.post.id}) }}">
+                    <a class="btn btn-success" href="{{ path('app_wall_index', {'id': comment.post.id}) }}">
                         {{ comment.post.community }}
                     </a>
                     <a class="btn btn-primary" href="{{ path('app_admin_comment_post', {'id': comment.post.id}) }}">
-                        {{ comment.post }}
+                        {{ comment.post.id }}
                     </a>
                     <a href="{{ path('app_admin_comment_delete', {'id': comment.id}) }}"
                        class="btn btn-danger">

@@ -9,7 +9,7 @@
             <th>Image</th>
             <th>Owner</th>
             <th>creation Date</th>
-            <th style="width: 250px"></th>
+            <th style="width: 400px"></th>
         </tr>
         {% for community in communities  %}
             <tr>
@@ -19,6 +19,9 @@
                 <td>{{ community.owner }}</td>
                 <td>{{ community.creationDate|date("d/m/Y") }}</td>
                 <td>
+                    <a href="{{ path('app_admin_community_users', {'id': community.id}) }}"
+                       class="btn btn-success">
+                        users</a>
                                         <a href="{{ path('app_admin_community_posts', {'id': community.id}) }}"
                                            class="btn btn-primary">
                                             Posts</a>

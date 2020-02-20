@@ -4,6 +4,7 @@
  {{ parent() }} admin-comment-post
 {% endblock %}
 
+{% block body %}
 <div class="container">
 
     <div class="d-inline-flex">
@@ -24,13 +25,13 @@
     </div>
 
 <h1>{{ post.community.name }}</h1>
-<span>{{ post.publicationDate }}</span>
-<img src="{{ asset('images/' ~ user.avatar) }}" width="100px">
+<span>{{ post.publicationDate|date('d/m/Y') }}</span>
+<img src="{{ asset('images/' ~ post.image) }}" width="100px">
 <p>{{ post.content }}</p>
 
 
 </div>
-{% block body %}
+
 
 {% endblock %}
 

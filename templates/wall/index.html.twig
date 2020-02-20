@@ -158,7 +158,7 @@
                                 <p>{{ poste.content }}</p>
                             </div>
                         </div>
-                        <div class="figure-caption " ">
+                        <div class="figure-caption">
                         <img src="{{ asset('images/' ~  poste.image) }}" alt="" class="img_poste">
                     </div>
                     <div class="tool_img " style="margin-top: 3px">
@@ -215,7 +215,14 @@
                                             <p style="font-size: 13px">{{ comment.getUser().firstName }}</p>
                                         </div>
                                         <div class="col-md-10 ">
-                                            <p>{{ comment.content }}</p>
+                                            {% if comment.status == true %}
+                                                <p>{{ comment.content }}</p>
+                                            {% else %}
+                                                <div class="alert alert-danger" role="alert">
+                                                    Ce commentaire a été modéré
+                                                </div>
+                                            {% endif %}
+
                                         </div>
                                     </div>
                                 {% endfor %}

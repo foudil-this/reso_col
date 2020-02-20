@@ -10,8 +10,14 @@
         <th style="width: 400px"></th>
     </tr>
     {% for user in users %}
+
         <tr>
-            <td>{{ user.id }}</td>
+            <td>
+                {{ user.id }}
+                {% if user.id == community.owner.id %}
+                    <span>owner</span>
+                {% endif %}
+            </td>
             <td>{{ user.lastName }}</td>
             <td>{{ user.firstName }}</td>
             <td><img src="{{ asset('images/' ~ user.avatar) }}" width="40px"></td>

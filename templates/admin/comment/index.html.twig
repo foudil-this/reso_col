@@ -10,22 +10,27 @@
         <tr>
             <th>Id</th>
             <th>content</th>
+            <th>Status</th>
             <th>Publication Date</th>
             <th style="width: 400px"></th>
         </tr>
         {% for comment in comments %}
-
-
+            {% dump(comment) %}
             <tr>
                 <td>{{ comment.id }}</td>
                 <td>{{ comment.content }}</td>
+                {% if comment.status == true %}
+                    <td>ok</td>
+                    {% else %}
+                    <td>modéré</td>
+                {% endif %}
                 <td>{{ comment.publicationDate|date("d/m/Y") }}</td>
                 <td>
-                    <a class="btn btn-success" href="{{ path('app_wall_murcommunity', {'id': comment.post.id}) }}">
+                    <a class="btn btn-success" href="{{ path('app_wall_index', {'id': comment.post.community.id}) }}">
                         {{ comment.post.community }}
                     </a>
-                    <a class="btn btn-primary" href="{{ path('app_admin_comment_post', {'id': comment.post.id}) }}">
-                        {{ comment.post }}
+                    <a class="btn btn-primary" href="{{ path('app_admin_post_detail', {'id': comment.post.id}) }}">
+                        post {{ comment.post.id }}
                     </a>
                     <a href="{{ path('app_admin_comment_delete', {'id': comment.id}) }}"
                        class="btn btn-danger">

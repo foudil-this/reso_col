@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} admin-comment-post
+{% endblock %}
+{% block body %}
+
+    <div class="container">
+
+
+        {#        <a class="btn btn-primary" href="{{ path('app_admin_post_community', {'id': post.id}) }}">#}
+        {#            {{ post.community }}#}
+        {#        </a><a class="btn btn-primary" href="{{ path('app_admin_post_comments', {'id': post.id}) }}">#}
+        {#            Comments#}
+        {#        </a>#}
+
+
+        <h1>{{ post.community.name }}</h1>
+
+        <div class="card" style="width: 18rem;">
+            <img src="{{ asset('images/' ~ post.image) }}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.publicationDate|date('d/m/Y') }}</h5>
+                <p class="card-text">{{ post.content }}</p>
+                <a href="{{ path('app_admin_post_delete', {'id': post.id}) }}" class="btn btn-danger">delete post</a>
+            </div>
+        </div>
+
+        <table>
+
+
+            {% for comment in post.comments %}
+
+
+                <tr>
+                    <td>{{ comment.id }}</td>
+                    <td>{{ comment.content }}</td>
+                    <td>{{ comment.publicationDate|date("d/m/Y") }}</td>
+                    {% if comment.status == true %}
+                        <td> ok</td>
+                    {% else %}
+                        <td> modéré</td>
+                    {% endif %}
+                    <td>
+                        {#                    <a class="btn btn-success" href="{{ path('app_user_detail', {'id': post.user.id}) }}">#}
+                        {#                        user {{ post.user.id }}#}
+                        {#                    </a>#}
+                        <a class="btn btn-success" href="{{ path('app_wall_index', {'id': post.user.id}) }}">
+                            user {{ post.user.id }}
+                        </a>
+                        <a class="btn btn-primary" href="{{ path('app_wall_index', {'id': post.community.id}) }}">
+                            {{ comment.post.community }}
+                        </a>
+                        <a href="{{ path('app_admin_comment_delete', {'id': comment.id}) }}"
+                           class="btn btn-danger">
+                            Supprimer
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+
+{% endblock %}
+

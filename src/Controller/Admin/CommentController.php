@@ -38,12 +38,13 @@ class CommentController extends AbstractController
      * @param EntityManagerInterface $manager
      * @param Comment $comment
      * @return RedirectResponse
-     * @Route("/delete")
+     * @Route("/delete{id}", requirements={"id": "\d+"})
      */
     public function delete(EntityManagerInterface $manager, Comment $comment)
     {
+        $comment->setStatus(false);
         // suppression de la categorie en bdd
-        $manager->remove($comment);
+        $manager->persist($comment);
         $manager->flush();
         $this->addFlash('success', 'Le comment est supprimé');
 
