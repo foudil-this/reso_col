@@ -4,6 +4,7 @@
 namespace App\Controller\Admin;
 
 
+use App\Entity\Comment;
 use App\Entity\Post;
 use App\Repository\PostRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +27,7 @@ class PostController extends AbstractController
      */
     public function index(PostRepository $repository)
     {
+
         $posts = $repository->findBy([], ['id' => 'DESC']);
 
         return $this->render('admin/post/index.html.twig',
@@ -51,5 +53,23 @@ class PostController extends AbstractController
 
         return $this->redirectToRoute('app_admin_post_index');
 
+    }
+
+    /**
+     * @Route("/comments{id}", requirements={"id": "\d+"})
+     * @param PostRepository $repository
+     * @param Post $post
+     * @return Response
+     */
+    public function
+    comments(PostRepository $repository, Post $post)
+    {
+        $comments = $post->getComments();
+        return $this->render('admin/post/comments.html.twig',
+            [
+                'comments'=>$comments,
+                'post'=>$post
+            ]
+        );
     }
 }

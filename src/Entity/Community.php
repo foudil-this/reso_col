@@ -42,7 +42,7 @@ class Community
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="community")
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="community", cascade={"remove"})
      */
     private $posts;
 
