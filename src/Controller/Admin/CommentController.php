@@ -25,6 +25,7 @@ class CommentController extends AbstractController
      */
     public function index(CommentRepository $repository)
     {
+
         $comments = $repository->findBy([], ['id' => 'DESC']);
 
         return $this->render('admin/comment/index.html.twig',
@@ -33,17 +34,42 @@ class CommentController extends AbstractController
     }
 
 
-
+    /**
+     * @param EntityManagerInterface $manager
+     * @param Comment $comment
+     * @return RedirectResponse
+     * @Route("/delete")
+     */
     public function delete(EntityManagerInterface $manager, Comment $comment)
-{
-    // suppression de la categorie en bdd
-    $manager->remove($comment);
-    $manager->flush();
-    $this->addFlash('success', 'Le comment est supprimé');
+    {
+        // suppression de la categorie en bdd
+        $manager->remove($comment);
+        $manager->flush();
+        $this->addFlash('success', 'Le comment est supprimé');
 
-    return $this->redirectToRoute('app_admin_comment_index');
+        return $this->redirectToRoute('app_admin_comment_index');
 
-}
+    }
 
+    /**
+     * @Route("/post/{id}", requirements={"id": "\d+"})
+     * @param CommentRepository $repository
+     * @param Comment $comment
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function post(CommentRepository $repository, Comment $comment)
+    {
+        $post = $comment->getPost();
+        $comments = $post->getComments();
+
+        return $this->render('admin/comment/post.html.twig',
+            [
+                'post'=>$post,
+                'comments'=>$comments,
+
+            ]
+        );
+
+    }
 
 }

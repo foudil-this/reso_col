@@ -15,31 +15,37 @@
 <body>
 
 
-
 {% if is_granted("ROLE_ADMIN") %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
                 <span class="navbar-brand mb-0 h1">
                     Admin
                 </span>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarAdmin" aria-controls="navbarAdmin" aria-expanded="false">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarAdmin"
+                    aria-controls="navbarAdmin" aria-expanded="false">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarAdmin">
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_admin_community_index') }}">
-                            Gestion  community
+                            Gestion community
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_admin_post_index') }}">
                             Gestion post
                         </a>
-                    </li></li>
+                    </li>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('app_admin_user_index') }}">
                             Gestion user
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_admin_comment_index') }}">
+                            Gestion comment
                         </a>
                     </li>
                 </ul>
@@ -136,15 +142,4 @@
 {% endblock %}
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
 

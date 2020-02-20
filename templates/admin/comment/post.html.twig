@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+ {{ parent() }} admin-comment-post
+{% endblock %}
+
+<div class="container">
+
+    <div class="d-inline-flex">
+
+
+{#        <a class="btn btn-primary" href="{{ path('app_admin_post_community', {'id': post.id}) }}">#}
+{#            {{ post.community }}#}
+{#        </a><a class="btn btn-primary" href="{{ path('app_admin_post_comments', {'id': post.id}) }}">#}
+{#            Comments#}
+{#        </a>#}
+        <a href="{{ path('app_admin_post_delete', {'id': post.id}) }}"
+           class="btn btn-danger">
+            Delete
+        </a>
+
+
+
+    </div>
+
+<h1>{{ post.community.name }}</h1>
+<span>{{ post.publicationDate }}</span>
+<img src="{{ asset('images/' ~ user.avatar) }}" width="100px">
+<p>{{ post.content }}</p>
+
+
+</div>
+{% block body %}
+
+{% endblock %}
+

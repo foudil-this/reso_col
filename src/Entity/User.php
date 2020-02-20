@@ -63,23 +63,23 @@ class User implements UserInterface, \Serializable
     private $role = 'ROLE_USER';
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Community", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="App\Entity\Community", mappedBy="owner", cascade={"remove"})
      */
     private $createdCommunities;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Community", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Community", mappedBy="users", cascade={"remove"})
      * @ORM\OrderBy{"creationDate" : "DESC"}
      */
     private $communities;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user", cascade={"remove"})
      */
     private $posts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", cascade={"remove"})
      */
     private $comments;
 

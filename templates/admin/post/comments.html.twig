@@ -1,8 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block title %}
 
-    <h1>Gestion comments</h1>
+{% endblock %}
+
+{% block body %}
+    <h1>{{ post.user }} : {{ post.publicationDate|date("d/m/Y") }}</h1>
 
 
     <table class="table table-striped">
@@ -37,6 +40,3 @@
     </table>
 {% endblock %}
 
-{% block title %}
-    {{ parent() }} -admin-communities
-{% endblock %}
